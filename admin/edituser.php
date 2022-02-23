@@ -18,9 +18,10 @@ if(isset($_POST['update']))
     $password=$_POST['password'];
     $nama_depan=$_POST['nama_depan'];
     $nama_belakang=$_POST['nama_belakang'];
+    $m_role_id=$_POST['m_role_id'];
         
     // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_user SET username='$username',password='$password',nama_depan='$nama_depan',nama_belakang='$nama_belakang' WHERE id=$id");
+    $result = mysqli_query($mysqli, "UPDATE m_user SET username='$username',password='$password',nama_depan='$nama_depan',nama_belakang='$nama_belakang',m_role_id='$m_role_id' WHERE id=$id");
     
     // Redirect to homepage to display updated user in list
     header("Location: user.php");
@@ -40,6 +41,7 @@ while($user_data = mysqli_fetch_array($result))
     $password = $user_data['password'];
     $nama_depan = $user_data['nama_depan'];
     $nama_belakang = $user_data['nama_belakang'];
+    $m_role_id = $user_data['m_role_id'];
     
 }
 ?>
@@ -131,6 +133,21 @@ while($user_data = mysqli_fetch_array($result))
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fa fa-wrench"></i>
+                    <span>Konfigurasi</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tentang.php">Tentang</a>
+                        <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
+                        <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
+                    </div>
+                </div>
+            </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -175,30 +192,41 @@ while($user_data = mysqli_fetch_array($result))
                         <form action="" method="POST" name="form1">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Username</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" value=<?php echo $username;?>>
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" value="<?php echo $username;?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Password</label>
-                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" value=<?php echo $password;?>>
+                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" value="<?php echo $password;?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Depan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" value=<?php echo $nama_depan;?>>
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" value="<?php echo $nama_depan;?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Belakang</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" value=<?php echo $nama_belakang;?>>
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" value="<?php echo $nama_belakang;?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">role</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" value=<?php echo $m_role_id;?>>
-                                    <option>1</option>
-                                    <option>2</option>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" value="<?php echo $m_role_id;?>">
+                                    <?php
+                                    $result = mysqli_query($mysqli, "SELECT * FROM m_role");
+                                    while($user_data = mysqli_fetch_array($result)){
+                                        
+                                        if($user_data['id'] == $m_role_id )
+                                        {
+                                            echo "<option value='$user_data[id]' selected>$user_data[nama_role]</option>";
+                                        }else 
+                                        {
+                                            echo "<option value='$user_data[id]'>$user_data[nama_role]</option>";
+                                        }
+                                    }
+                                    ?>
                                     </select>
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <a href="user.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
                                 <button type="submit" name="update" value="Edit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </form>   
@@ -248,7 +276,7 @@ while($user_data = mysqli_fetch_array($result))
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

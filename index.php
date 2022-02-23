@@ -1,3 +1,35 @@
+<?php
+// Menyisipkan file koneksi ke database
+require 'admin/config.php';
+// Menyisipkan file functions.php agar function yang kita buat dapat dipakai dihalaman ini
+require 'functions.php';
+
+// rekam data user yang sudah mengakses website kita
+$ip      = ip_user();
+$browser = browser_user();
+$os      = os_user();
+// Check bila sebelumnya data pengunjung sudah terrekam
+if (! isset($_COOKIE['VISITOR'])) {
+
+  // Masa akan direkam kembali
+  // Tujuan untuk menghindari merekam pengunjung yang sama dihari yang sama.
+  // Cookie akan disimpan selama 24 jam
+  $duration = time()+60*60*24;
+
+  // simpan kedalam cookie browser
+  setcookie('VISITOR',$browser,$duration);
+
+  // current time
+  $tanggal = date('Y-m-d H:i:s');
+  
+  // SQL Command atau perintah SQL INSERT
+  $result = mysqli_query($mysqli, 'INSERT INTO l_statistik(ip, os, browser, tanggal) VALUES ("'.$ip.'","'.$os.'","'.$browser.'","'.$tanggal.'")');
+
+  // variabel { $db } adalah perwakilan dari koneksi database lihat config.php
+  $query = $mysqli->query($result);
+}
+?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -17,7 +49,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="Front-end/images/favicon.ico" />
   
   <!-- CSS
   ================================================== -->
@@ -67,7 +99,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="index.html">
+      <a class="navbar-brand logo" href="../perpustakaan/">
         <img class="logo-default" src="Front-end/images/logo.png" alt="logo"/>
         <img class="logo-white" src="Front-end/images/logo-white.png" alt="logo"/>
       </a>
@@ -80,32 +112,19 @@ Fixed Navigation
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav ml-auto text-center">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Beranda</a>
+            <a class="nav-link" href="../perpustakaan/">Beranda</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="Front-end/tentang.html">Tentang</a>
+            <a class="nav-link" href="Front-end/tentang.php">Tentang</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="Front-end/layanan.html">Layanan</a>
+            <a class="nav-link" href="Front-end/katalog.php">Katalog Buku</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="Front-end/katalog.html">Katalog Buku</a>
+            <a class="nav-link" href="Front-end/kontak.php">Kontak</a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="Front-end/kontak.html">Kontak</a>
-          </li>
-		  <li class="nav-item ">
-            <a class="nav-link" href="Front-end/login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="Front-end/404.html">404 Page</a>
-              <a class="dropdown-item" href="Front-end/blog.html">Berita Acara</a>
-            </div>
+		      <li class="nav-item ">
+            <a class="nav-link" href="Front-end/login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -127,7 +146,7 @@ End Fixed Navigation
 						Perpustakaan Daerah Banjarmasin</h1>
 					<p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Menyediakan layanan informasi serta peminjaman buku <br> veritatis ipsa aliquam tempore nostrum id
 						officia quaerat eum corrupti, <br> ipsa aliquam velit.</p>
-					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-main" href="Front-end/login.html">Login</a>
+					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-main" href="Front-end/login.php">Login</a>
 				</div>
 			</div>
 		</div>
@@ -140,84 +159,62 @@ End Fixed Navigation
 						</h1>
 					<p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">Sistem Perpustakaan Daerah Banjarmasin ini menyediakan layanan peminjaman buku dan e-book
 						<br> Serta menyediakan informasi terkait buku dan perpustakaan.</p>
-					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8"  class="btn btn-main" href="Front-end/daftar.html">Daftar Member</a>
+					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8"  class="btn btn-main" href="Front-end/daftar.php">Daftar Member</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-
-
-
 <!--
 		Start Blog Section
 		=========================================== -->
+    <?php
+    // include database connection file
+    include_once("admin/config.php");
+    $result = mysqli_query($mysqli, "SELECT * FROM l_berita");
+    ?>
 
 <section class="blog" id="blog">
 	<div class="container">
+        <?php
+          $stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita ORDER BY id ");
+          $stmt_berita->execute();
+          $result_berita = $stmt_berita->fetchAll();
+        ?>
 		<div class="row">
-
 			<!-- section title -->
 			<div class="col-12">
 				<div class="title text-center ">
 					<h2> Berita <span class="color">Acara</span></h2>
 					<div class="border"></div>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus facere accusamus, reprehenderit libero
-						inventore nam.</p>
 				</div>
 			</div>
 			<!-- /section title -->
 			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 clearfix ">
+      <?php
+        		if(!empty($result_berita)) { 
+        		foreach($result_berita as $row) {
+        ?>
+        
+			  <article class="col-md-4 col-sm-6 col-xs-12 clearfix ">
 				<div class="post-item">
 					<div class="media-wrapper">
-						<img src="Front-end/images/blog/post-1.jpg" alt="amazing caves coverimage" class="img-fluid">
+						<?php echo "<img src='Front-end/images/blog/$row[foto]' alt='amazing caves coverimage' class='img-fluid'>"?>
 					</div>
 
 					<div class="content">
-						<h3><a href="Front-end/single-post.html">Reasons to Smile</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="Front-end/single-post.html">Baca Selengkapnya</a>
+          <?php echo "<h3><a href='Front-end/single-post.php?id=$row[id]'>$row[judul]</a></h3>"?>
+						<?php echo "<p>$row[keterangan]</p>"?>
+            <a class='btn btn-main' href="Front-end/single-post.php?id=<?php echo $row['id']; ?>">Baca selengkapnya</a>
 					</div>
 				</div>
 			</article>
 			<!-- /single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="Front-end/images/blog/post-2.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="Front-end/single-post.html">A Few Moments</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="Front-end/single-post.html">Baca Selengkapnya</a>
-					</div>
-				</div>
-			</article>
-			<!-- end single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="Front-end/images/blog/post-3.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="Front-end/single-post.html">Hints for Life</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="Front-end/single-post.html">Baca Selengkapnya</a>
-					</div>
-				</div>
-			</article>
-			<!-- end single blog post -->
+      <?php
+            }
+          }
+          ?>
 		</div> <!-- end row -->
 	</div> <!-- end container -->
 </section> <!-- end section -->
@@ -237,7 +234,7 @@ End Fixed Navigation
             <li><h3>Layanan </h3></li>
             <li><a href="#">Pemesanan Buku</a></li>
             <li><a href="#">Peminjaman Buku</a></li>
-            <li><a href="#">Informasin Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -271,7 +268,9 @@ End Fixed Navigation
     </div> <!-- end container -->
   </div>
   <div class="footer-bottom">
-    <h5>Copyright 2022. All rights reserved.</h5>
+    <h5>Copyright &copy; <script type="text/javascript">
+      new Date().getFullYear()>document.write(""+new Date().getFullYear());
+      </script> All rights reserved.</h5>
     <h6><a href="">Diskominfotik Kota Banjarmasin </a></h6>
   </div>
 </footer> <!-- end footer -->

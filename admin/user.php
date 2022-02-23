@@ -3,7 +3,10 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
+// $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
+$query = "SELECT m_user.id, m_user.username, m_user.password, m_user.nama_depan, m_user.nama_belakang, m_role.nama_role
+FROM m_user INNER JOIN m_role ON m_user.m_role_id = m_role.id";
+$result = mysqli_query($mysqli, $query);
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +26,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
      <link rel="icon" type="image/png" sizes="16x16" href="./img/logobaru.png">
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -93,6 +94,21 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
                 <a class="nav-link" href="kritikdanrequest.php">
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fa fa-wrench"></i>
+                    <span>Konfigurasi</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tentang.php">Tentang</a>
+                        <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
+                        <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
+                    </div>
+                </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -190,25 +206,33 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
           <form action="" method="POST" name="form1">
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Username</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="username">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="username" required>
             </div>
             <div class='form-group'>
                 <label for='exampleFormControlInput1'>Password</label>
-                <input type='password' class='form-control' id='exampleFormControlInput1' name="password">
+                <input type='password' class='form-control' id='exampleFormControlInput1' name="password" required>
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Nama Depan</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan">
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" required>
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Nama Belakang</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang">
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" required>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlSelect1">role</label>
-                <select class="form-control" id="exampleFormControlSelect1" name="m_role_id">
-                  <option>1</option>
-                  <option>2</option>
+                <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" required>
+                    <!-- <option value="">--Pilih--</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option> -->
+                  <?php 
+                $result = mysqli_query($mysqli, "SELECT * FROM m_role");
+                echo "<option value=''></option>";
+                while($user_data = mysqli_fetch_array($result)){
+                  echo "<option value='$user_data[id]'>$user_data[id]</option>";
+                }
+                  ?>
                 </select>
               </div>
               <div class='form-footer'>
@@ -231,9 +255,6 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
 
             //insert user data into table
             $result = mysqli_query($mysqli, 'INSERT INTO m_user(username, password, nama_depan, nama_belakang, m_role_id) VALUES ("'.$username.'","'.$password.'","'.$nama_depan.'","'.$nama_belakang.'","'.$m_role_id.'")');
-
-            //show message when user added
-            //echo "User added successfully. <a href = 'user.php'>View Users </a>";
             echo "<script>window.location.href='user.php';</script>";
           }
           ?>
@@ -285,7 +306,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

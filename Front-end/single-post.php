@@ -1,3 +1,11 @@
+<?php
+
+  include_once("../admin/config.php");
+  $id = $_GET['id'];
+  $result = mysqli_query($mysqli, "SELECT * FROM l_berita WHERE id=$id");
+?>
+
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -66,7 +74,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="../index.html">
+      <a class="navbar-brand logo" href="../index.php">
         <img class="logo-default" src="images/logo.png" alt="logo"/>
         <img class="logo-white" src="images/logo-white.png" alt="logo"/>
       </a>
@@ -80,33 +88,20 @@ Fixed Navigation
         <ul class="navbar-nav ml-auto text-center">
           <li class="nav-item dropdown ">
             <li class="nav-item ">
-              <a class="nav-link " href="../index.html">Beranda</a>
+              <a class="nav-link " href="../../perpustakaan/">Beranda</a>
             </li>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="tentang.html">Tentang</a>
+            <a class="nav-link" href="tentang.php">Tentang</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="layanan.html">Layanan</a>
+            <a class="nav-link" href="katalog.php">Katalog Buku</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="katalog.html">Katalog Buku</a>
+            <a class="nav-link" href="kontak.php">Kontak</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="kontak.html">Kontak</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="404.html">404 Page</a>
-              <a class="dropdown-item" href="blog.html">Berita Acara</a>
-            </div>
+            <a class="nav-link" href="login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -136,142 +131,34 @@ End Fixed Navigation
     <div class="row">
       <div class="col-lg-8">
         <article class="post">
+        <?php while($row = mysqli_fetch_array($result)){?>
           <div class="post-image">
-            <img class="img-fluid w-100" src="images/blog/post-1.jpg" alt="post-image">
+            <?php echo "<img class='img-fluid w-100' src='../Front-end/images/blog/$row[foto]' alt='post-image'>";?>
           </div>
           <!-- Post Content -->
           <div class="post-content">
-            <h3>Cras Sed Elit Sit Amet.</h3>
-            <ul class="list-inline">
-              <li class="list-inline-item">
-                <a href="#">Admin</a>&nbsp;/
-              </li>
-              <li class="list-inline-item">
-                <a href="#">30 comments</a>&nbsp;/
-              </li>
-              <li class="list-inline-item">
-                <a href="#">30 likes</a>
-              </li>
-            </ul>
-            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              Sed ut perspiciatis unde omnis natus error sit voluptatem accusantium dolore mque laudantium totam rem aperiam
-              eaque ipsa quae ab illo inventore veritatis et quasi archite beatae vitae dicta sunt explicabo. nemo enim ipsam
-              voluptatem quia voluptassit.aspernatur aut odit aut fugit.</p>
-            <p>Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt neque poro quisquam est, qui dolorem
-              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-              labore et dolore magnam aliquam quaerat voluptatem</p>
-            <!-- blockquote -->
-            <blockquote data-aos="fade-left" data-aos-duration="1000">Excepteur sint occaecat cupidatat non proi dent, sunt in culpa qui officia deserunt mollit anim iest.laborum.
-              sed perspiciatis unde omnis iste natus error voluptatem accusantium dolore mque laudantium.</blockquote>
-            <p>Occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Seper spiciatis
-              unde omnis natus error sit voluptatem accusantium doloremque laudantium totam rem. aperiam eaque ipsa quae
-              ab illo inventore veritatis.</p>
-            <!-- post share -->
-            <ul class="post-content-share list-inline">
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="tf-ion-social-twitter"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="tf-ion-social-linkedin"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="tf-ion-social-facebook"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="tf-ion-social-skype"></i>
-                </a>
-              </li>
-            </ul>
-            <h3>2 comments</h3>
-            <ul class="comment-list">
-              <!-- comment list -->
-              <li class="comment-list-item">
-                <div class="comment-list-item-image">
-                  <img src="images/blog/comment-1.jpg" alt="comment-img">
-                </div>
-                <div class="comment-list-item-content">
-                  <h5>Anke Kirsch</h5>
-                  <h6>Aug 20, 2018</h6>
-                  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor emque laudant tota rem
-                    ape riamipsa eaque. </p>
-                  <a href="#" class="comment-btn">reply</a>
-                </div>
-              </li>
-              <li class="comment-list-item">
-                <div class="comment-list-item-image">
-                  <img src="images/blog/comment-2.jpg" alt="comment-img">
-                </div>
-                <div class="comment-list-item-content">
-                  <h5>Falk Burger</h5>
-                  <h6>Aug 20, 2018</h6>
-                  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor emque laudant tota rem
-                    ape riamipsa eaque. </p>
-                  <a href="#" class="comment-btn">reply</a>
-                </div>
-              </li>
-            </ul>
-            <h3>Leave A Comments</h3>
-            <!-- Comment Form -->
-            <form action="#" class="comment-form">
-              <div class="row">
-                <div class="col-lg-6 col-md-6">
-                  <input type="text" name="first-name" class="form-control" id="first-name" placeholder="First Name" required>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                  <input type="email" name="mail" class="form-control" id="mail" placeholder="Email" required>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                  <textarea class="form-control" name="msg" id="msg" rows="6" placeholder="Message" required></textarea>
-                </div>
-              </div>
-              <button type="submit" value="send" class="btn btn-primary">send Message</button>
-            </form>
+            <?php echo "<h3>$row[judul]</h3>";?>
+             <!-- <ul class="list-inline">
+               <li class="list-inline-item">
+                 <a href="#">Admin</a>&nbsp;/
+               </li>
+               <li class="list-inline-item">
+                 <a href="#">30 comments</a>&nbsp;/
+               </li>
+               <li class="list-inline-item">
+                 <a href="#">30 likes</a>
+               </li>
+             </ul> -->
+            <?php echo "<p>$row[isi]</p>";?>
+            <?php
+              }
+              ?>
           </div>
         </article>
       </div>
       <div class="col-lg-4">
         <!-- sidebar -->
         <aside class="sidebar">
-          <div class="widget-search widget">
-            <form action="#">
-              <!-- Search bar -->
-              <input class="form-control" type="text" placeholder="Search..." name="search">
-              <button type="submit" class="widget-search-btn">
-                <i class="tf-ion-ios-search"></i>
-              </button>
-            </form>
-          </div>
-          <div class="widget-categories widget">
-            <h2>Categories</h2>
-            <!-- widget categories list -->
-            <ul class="widget-categories-list">
-              <li>
-                <a href="#">Financial Advise</a>
-              </li>
-              <li>
-                <a href="#">Businee Growth</a>
-              </li>
-              <li>
-                <a href="#">Investment Marketing</a>
-              </li>
-              <li>
-                <a href="#">Business Consulting</a>
-              </li>
-              <li>
-                <a href="#">Advanced Analytics</a>
-              </li>
-              <li>
-                <a href="#">Investment Marketing</a>
-              </li>
-            </ul>
-          </div>
           <div class="widget-post widget">
             <h2>Latest Post</h2>
             <!-- latest post -->
@@ -329,17 +216,17 @@ End Fixed Navigation
     <div class="container">
       <div class="row">
         <div class="col-sm-3 col-md-3 col-lg-3">
-          <h3>about</h3>
-          <p>Integer posuere erat a ante venenati dapibus posuere velit aliquet. Fusce dapibus, tellus cursus commodo, tortor mauris sed posuere.</p>
+        <h3>Tentang Website</h3>
+          <p>Sistem Perpustakaan Daerah Banjarmasin ini menyediakan layanan peminjaman buku dan e-book, Serta menyediakan informasi terkait buku dan perpustakaan.</p>
         </div>
         <!-- End of .col-sm-3 -->
 
         <div class="col-sm-3 col-md-3 col-lg-3">
           <ul>
-            <li><h3>Our Services</h3></li>
-            <li><a href="#">Graphic Design</a></li>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
+          <li><h3>Layanan </h3></li>
+            <li><a href="#">Pemesanan Buku</a></li>
+            <li><a href="#">Peminjaman Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->

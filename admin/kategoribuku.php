@@ -93,6 +93,21 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fa fa-wrench"></i>
+                    <span>Konfigurasi</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tentang.php">Tentang</a>
+                        <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
+                        <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
+                    </div>
+                </div>
+            </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -142,7 +157,8 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
                                 <thead>
                                         <tr>
                                           <th class="col-1">No.</th>
-                                          <th class="col-9">Judul Buku</th>
+                                          <th class="col-6">Judul Buku</th>
+                                          <th class="col-3">Foto</th>
                                           <th class="col-2">Action</th>
                                         </tr>
                                       </thead>
@@ -154,6 +170,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
                                             echo "<tr>";
                                             echo "<td>".$no++."</td>";
                                             echo "<td>".$user_data['nama_kategori']."</td>";
+                                            echo "<td>".$user_data['foto']."</td>";
                                             echo "<td>
 
                                             <a href='editkategori.php?id=$user_data[id]'><button class='btn btn-primary' title='Edit'>
@@ -183,7 +200,11 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
           <form action="" method="POST" name="form1">
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Kategori</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_kategori">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_kategori" required>
+            </div>
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Cover</label><br>
+              <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
             </div>
               <div class='form-footer'>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -195,12 +216,13 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
           if(isset($_POST['Submit'])){
             //$id = $_POST['id'];
             $nama_kategori = $_POST['nama_kategori'];
+            $foto = $_POST['foto'];
 
             //include database connection file
             include('config.php');
 
             //insert user data into table
-            $result = mysqli_query($mysqli, 'INSERT INTO m_kategori(nama_kategori) VALUES ("'.$nama_kategori.'")');
+            $result = mysqli_query($mysqli, 'INSERT INTO m_kategori (nama_kategori, foto) VALUES ("'.$nama_kategori.'","'.$foto.'")');
 
             //show message when user added
             //echo "User added successfully. <a href = 'user.php'>View Users </a>";
@@ -211,7 +233,6 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
   </div>
   </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -255,7 +276,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

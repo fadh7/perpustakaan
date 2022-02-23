@@ -3,7 +3,10 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
+$query = "SELECT m_buku.id, m_buku.foto, m_buku.judul_buku, m_buku.sinopsis, m_kategori.nama_kategori, m_buku.pengarang, m_buku.jumlah_buku,
+m_buku.nama_penerbit, m_buku.isbn, m_buku.lokasi, m_buku.tahun, m_buku.tanggal_masuk, m_buku.sumber, m_buku.harga
+FROM m_buku INNER JOIN m_kategori ON m_buku.m_kategori_id = m_kategori.id";
+$result = mysqli_query($mysqli, $query);
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +96,21 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fa fa-wrench"></i>
+                    <span>Konfigurasi</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tentang.php">Tentang</a>
+                        <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
+                        <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
+                    </div>
+                </div>
+            </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -123,9 +141,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
                                     Logout
                                 </a>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
@@ -142,6 +158,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
                                 <thead>
                                       <tr>
                                         <th scope="col">No.</th>
+                                        <th scope="col">Cover</th>
                                         <th scope="col">Judul Buku</th>
                                         <th scope="col">Sinopsis</th>
                                         <th scope="col">Kategori</th>
@@ -164,9 +181,10 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
 
                                           echo "<tr>";
                                           echo "<td>".$no++."</td>";
+                                          echo "<td>".$user_data['foto']."</td>";
                                           echo "<td>".$user_data['judul_buku']."</td>";
                                           echo "<td>".$user_data['sinopsis']."</td>";
-                                          echo "<td>".$user_data['m_kategori_id']."</td>";
+                                          echo "<td>".$user_data['nama_kategori']."</td>";
                                           echo "<td>".$user_data['pengarang']."</td>";
                                           echo "<td>".$user_data['jumlah_buku']."</td>";
                                           echo "<td>".$user_data['nama_penerbit']."</td>";
@@ -205,55 +223,67 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
         <form action="" method="POST" name="form1">
           <div class='form-group'>
             <label for='exampleFormControlInput1'>Judul Buku</label>
-            <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku">
+            <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" required>
           </div>
           <div class='form-group'>
               <label for='exampleFormControlInput1'>Sinopsis</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Kategori</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="m_kategori_id">
+              <select class="form-control" id="exampleFormControlSelect1" name="m_kategori_id" required>
+                <?php 
+                $result = mysqli_query($mysqli, "SELECT * FROM m_kategori");
+                echo "<option value=''></option>";
+                while($user_data = mysqli_fetch_array($result)){
+                  echo "<option value='$user_data[id]'>$user_data[nama_kategori]</option>";
+                }
+                  ?>
+                </select>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Pengarang</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Jumlah Buku</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Nama Penerbit</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>ISBN</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Lokasi</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Tahun</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Tanggal Masuk</label>
-              <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk">
+              <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Sumber</label>
-              <select class="form-control" id="exampleFormControlSelect1" name="sumber">
-                  <option value="">--Pilih--</option>
+              <select class="form-control" id="exampleFormControlSelect1" name="sumber" required>
+                  <option value=""></option>
                   <option value="Pembelian">Pembelian</option>
                   <option value="Hibah">Hibah</option>
                 </select>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Harga</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="harga">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" required>
+            </div>
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Cover</label><br>
+              <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
             </div>
             <div class='form-footer'>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -276,12 +306,15 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
           $tanggal_masuk = $_POST['tanggal_masuk'];
           $sumber = $_POST['sumber'];
           $harga = $_POST['harga'];
+          $foto = $_POST['foto'];
           //include database connection file
           include('config.php');
 
           //insert user data into table
-          $result = mysqli_query($mysqli, 'INSERT INTO m_buku(judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga) 
-          VALUES ("'.$judul_buku.'","'.$sinopsis.'","'.$m_kategori_id.'","'.$pengarang.'","'.$jumlah_buku.'","'.$nama_penerbit.'","'.$isbn.'","'.$lokasi.'","'.$tahun.'","'.$tanggal_masuk.'","'.$sumber.'","'.$harga.'")');
+          $result = mysqli_query($mysqli, 'INSERT INTO m_buku(judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga, foto) 
+          VALUES ("'.$judul_buku.'","'.$sinopsis.'","'.$m_kategori_id.'","'.$pengarang.'","'.$jumlah_buku.'","'.$nama_penerbit.'","'.$isbn.'","'.$lokasi.'","'.$tahun.'","'.$tanggal_masuk.'","'.$sumber.'","'.$harga.'","'.$foto.'")');
+
+          var_dump($result);
 
           echo "<script>window.location.href='databuku.php';</script>";
         }
@@ -334,7 +367,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

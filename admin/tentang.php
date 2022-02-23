@@ -3,66 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
+$result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
 ?>
-<?php
-// include database connection file
-include_once("config.php");
- 
-// Check if form is submitted for user update, then redirect to homepage after update
-if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
-    
-    $judul_buku=$_POST['judul_buku'];
-    $sinopsis=$_POST['sinopsis'];
-    $m_kategori_id=$_POST['m_kategori_id'];
-    $pengarang=$_POST['pengarang'];
-    $jumlah_buku=$_POST['jumlah_buku'];
-    $nama_penerbit=$_POST['nama_penerbit'];
-    $isbn=$_POST['isbn'];    
-    $lokasi=$_POST['lokasi'];
-    $tahun=$_POST['tahun'];
-    $tanggal_masuk=$_POST['tanggal_masuk'];
-    $sumber=$_POST['sumber'];
-    $harga=$_POST['harga'];
-    $foto=$_POST['foto'];
 
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_buku SET judul_buku='$judul_buku', sinopsis='$sinopsis', m_kategori_id='$m_kategori_id',pengarang='$pengarang', 
-    jumlah_buku='$jumlah_buku',nama_penerbit='$nama_penerbit',isbn='$isbn',lokasi='$lokasi', tahun='$tahun', tanggal_masuk='$tanggal_masuk', sumber='$sumber', 
-    harga='$harga',foto='$foto' WHERE id=$id");
-    
-    // Redirect to homepage to display updated user in list
-    header("Location: databuku.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM m_buku WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $judul_buku = $user_data['judul_buku'];
-    $sinopsis = $user_data['sinopsis'];
-    $m_kategori_id = $user_data['m_kategori_id'];
-    $pengarang = $user_data['pengarang'];
-    $jumlah_buku = $user_data['jumlah_buku'];
-    $nama_penerbit = $user_data['nama_penerbit'];
-    $isbn = $user_data['isbn'];
-    $lokasi = $user_data['lokasi'];
-    $tahun = $user_data['tahun'];
-    $tanggal_masuk = $user_data['tanggal_masuk'];
-    $sumber = $user_data['sumber'];
-    $harga = $user_data['harga'];
-    $foto = $user_data['foto'];
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,7 +50,6 @@ while($user_data = mysqli_fetch_array($result))
                 </div>
                 <div class="sidebar-brand-text mx-3">SIMPUSDA ADMIN</div>
             </a>
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
@@ -126,7 +68,7 @@ while($user_data = mysqli_fetch_array($result))
                     <i class="fa fa-filter"></i>
                     <span>Kategori Buku</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="databuku.php">
                     <i class="fa fa-book"></i>
                     <span>Data Buku</span></a>
@@ -151,7 +93,7 @@ while($user_data = mysqli_fetch_array($result))
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
             </li>
-            <li class="nav-item ">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-wrench"></i>
@@ -172,21 +114,17 @@ while($user_data = mysqli_fetch_array($result))
             </div>
         </ul>
         <!-- End of Sidebar -->
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h3 class="h3 mb-0 text-gray-800">Edit Kategori</h3>
+                    <h3 class="h3 mb-0 text-gray-800">Konfigurasi</h3>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                             <!-- Dropdown - User Information -->
@@ -196,9 +134,7 @@ while($user_data = mysqli_fetch_array($result))
                                     Logout
                                 </a>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
@@ -207,88 +143,44 @@ while($user_data = mysqli_fetch_array($result))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Judul Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" value="<?php echo $judul_buku;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Sinposis</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" value="<?php echo $sinopsis;?>">
-                                </div> 
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Kategori</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="m_kategori_id" required="" value="<?php echo $m_kategori_id;?>">
-                                <?php 
-                                    $result = mysqli_query($mysqli, "SELECT * FROM m_kategori");
-                                    while($user_data = mysqli_fetch_array($result)){
-                                        
-                                        if($user_data['id'] == $m_kategori_id )
-                                        {
-                                            echo "<option value='$user_data[id]' selected>$user_data[nama_kategori]</option>";
-                                        }else 
-                                        {
-                                            echo "<option value='$user_data[id]'>$user_data[nama_kategori]</option>";
-                                        }
-                                    }
-                                ?>
-                                </select>
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Pengarang</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" value="<?php echo $pengarang;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Jumlah Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" value="<?php echo $jumlah_buku;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Nama Penerbit</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" value="<?php echo $nama_penerbit;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>ISBN</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" value="<?php echo $isbn;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Lokasi</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" value="<?php echo $lokasi;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Tahun</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" value="<?php echo $tahun;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Tanggal Masuk</label>
-                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" value="<?php echo $tanggal_masuk;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Sumber</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="sumber" value="<?php echo $sumber;?>">
-                                    <option value="Hibah">Hibah</option>
-                                    <option value="Pembelian">Pembelian</option>
-                                    </select>
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Harga</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" value="<?php echo $harga;?>">
-                                </div>
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Cover</label><br>
-                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="foto" value="<?php echo $foto;?>"><br>
-                                </div>
-                                <div class='form-footer'>
-                                <input type="hidden" name="id" value="<?php echo $_GET['id'];?>">
-                                <a href="databuku.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
-                                <button type="submit" name="update" value="Edit" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </form>   
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                        <tr>
+                                          <th scope="col">No.</th>
+                                          <th scope="col">Sejarah</th>
+                                          <th scope="col">Visi</th>
+                                          <th scope="col">Misi</th>
+                                          <th class="col-2">Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <?php
+                                        $no = 1;
+                                          while($user_data = mysqli_fetch_array($result)){
+
+                                            echo "<tr>";
+                                            echo "<td>".$no++."</td>";
+                                            echo "<td>".$user_data['sejarah']."</td>";
+                                            echo "<td>".$user_data['visi']."</td>";
+                                            echo "<td>".$user_data['misi']."</td>";
+                                            echo "<td>
+
+                                            <a href='edittentang.php?id=$user_data[id]'><button class='btn btn-primary' title='Edit'>
+                                            <i class ='fa fa-pen'></i></button></a>
+                                            <a href='hapustentang.php?id=$user_data[id]' class ='confirmation'><button class='btn btn-danger' title='Hapus'>
+                                            <i class ='fa fa-trash'></i></button></a>
+                                            </td>
+                                            </tr>";
+                                          }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -303,10 +195,8 @@ while($user_data = mysqli_fetch_array($result))
                 </div>
             </footer>
             <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
-
     </div>
     <!-- End of Page Wrapper -->
 

@@ -1,3 +1,9 @@
+<?php
+
+  include_once("../admin/config.php");
+  $id = $_GET['id'];
+  $result = mysqli_query($mysqli, "SELECT * FROM m_buku WHERE id=$id");
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -76,7 +82,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="../index.html">
+      <a class="navbar-brand logo" href="../index.php">
         <img class="logo-default" src="images/logo.png" alt="logo"/>
         <img class="logo-white" src="images/logo-white.png" alt="logo"/>
       </a>
@@ -89,32 +95,19 @@ Fixed Navigation
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav ml-auto text-center">
          <li class="nav-item ">
-            <a class="nav-link " href="../index.html">Beranda</a>
+            <a class="nav-link " href="../../perpustakaan/">Beranda</a>
          </li>
           <li class="nav-item ">
-            <a class="nav-link" href="tentang.html">Tentang</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="layanan.html">Layanan</a>
+            <a class="nav-link" href="tentang.php">Tentang</a>
           </li>
           <li class="nav-item  active ">
-            <a class="nav-link" href="katalog.html">Katalog Buku</a>
+            <a class="nav-link" href="katalog.php">Katalog Buku</a>
           </li>
 		  <li class="nav-item ">
-            <a class="nav-link" href="kontak.html">Kontak</a>
+            <a class="nav-link" href="kontak.php">Kontak</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="404.html">404 Page</a>
-              <a class="dropdown-item" href="blog.html">Berita Acara</a>
-            </div>
+            <a class="nav-link" href="login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -139,9 +132,6 @@ End Fixed Navigation
 		</div>
 	</div>
 </section>
-
-
-
 <!-- books -->
 <!-- Page Content  -->
 <div id="content-page" class="content-page">
@@ -155,7 +145,7 @@ End Fixed Navigation
                          <div class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height">
                             <div class="iq-card-body p-0">
                                <div class="row align-items-center">
-                                  <div class="col-3">
+                                  <!-- <div class="col-3">
                                      <ul id="description-slider-nav" class="list-inline p-0 m-0  d-flex align-items-center">
                                         <li>
                                            <a href="javascript:void(0);">
@@ -188,37 +178,12 @@ End Fixed Navigation
                                            </a>
                                         </li>
                                      </ul>
-                                  </div>
+                                  </div> -->
                                   <div class="col-9">
+                                  <?php while($row = mysqli_fetch_array($result)){?>
                                      <ul id="description-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                                        <li>
                                            <a href="javascript:void(0);">
-                                           <img src="images/book-dec/01.jpg" class="img-fluid w-100 rounded" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/02.jpg" class="img-fluid w-100 rounded" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/03.jpg" class="img-fluid w-100 rounded" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/04.jpg" class="img-fluid w-100 rounded" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/05.jpg" class="img-fluid w-100 rounded" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/06.jpg" class="img-fluid w-100 rounded" alt="">
+                                           <?php echo "<img src='images/book-dec/$row[foto]' class='img-fluid w-100 rounded' alt=''>";?>
                                            </a>
                                         </li>
                                      </ul>
@@ -230,7 +195,7 @@ End Fixed Navigation
                       <div class="col-md-6">
                          <div class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height">
                             <div class="iq-card-body p-0">
-                               <h3 class="mb-3">A Casey Christi night books in the raza Dakota Krout</h3>
+                               <?php echo "<h3 class='mb-3'>$row[judul_buku]</h3>";?>
                                
                                <div class="mb-3 d-block">
                                   <span class="font-size-20 text-warning">
@@ -241,8 +206,11 @@ End Fixed Navigation
                                   <i class="fa fa-star"></i>
                                   </span>
                                </div>
-                               <span class="text-dark mb-4 pb-4 iq-border-bottom d-block">Sinopsis: Monterhing in the best book testem ipsum is simply dtest in find in a of the printing and typeseting industry into to end.in find in a of the printing and typeseting industry in find to make it all done into end.</span>
-                               <div class="text-primary mb-4">Penulis: <span class="text-body">Jhone Steben</span></div>
+                               <?php echo "<span class='text-dark mb-4 pb-4 iq-border-bottom d-block'>$row[sinopsis]</span>";?>
+                               <div class="text-primary mb-1">Pengarang : <?php echo "<span class='text-body'>$row[pengarang]</span>"?></div>
+                               <div class="text-primary mb-1">Penerbit : <?php echo "<span class='text-body'>$row[nama_penerbit]</span>"?></div>
+                               <div class="text-primary mb-1">ISBN : <?php echo "<span class='text-body'>$row[isbn]</span>"?></div>
+                               <div class="text-primary mb-5">Tahun : <?php echo "<span class='text-body'>$row[tahun]</span>"?></div>
                                <div class="mb-4 d-flex align-items-center">                                       
                                   <a href="#" class="btn btn-main view-more mr-2">Add To Cart</a>
                                   <a href="book-pdf.html" class="btn btn-main view-more mr-2">Baca Sampel</a>
@@ -251,6 +219,9 @@ End Fixed Navigation
                                
                             </div>
                          </div>
+                           <?php
+                              }
+                           ?>
                       </div>
                    </div>
                 </div>
@@ -356,8 +327,7 @@ End Fixed Navigation
                   </ul>
                </div>
             </div>
-         </div>
-                     
+         </div>     
         </div>
         </div>
      </div>
@@ -382,7 +352,7 @@ End Fixed Navigation
             <li><h3>Layanan </h3></li>
             <li><a href="#">Pemesanan Buku</a></li>
             <li><a href="#">Peminjaman Buku</a></li>
-            <li><a href="#">Informasin Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -416,7 +386,9 @@ End Fixed Navigation
     </div> <!-- end container -->
   </div>
   <div class="footer-bottom">
-    <h5>Copyright 2022. All rights reserved.</h5>
+   <h5>Copyright &copy; <script type="text/javascript">
+      new Date().getFullYear()>document.write(""+new Date().getFullYear());
+      </script> All rights reserved.</h5>
     <h6><a href="">Diskominfotik Kota Banjarmasin </a></h6>
   </div>
 </footer> <!-- end footer -->

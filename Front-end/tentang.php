@@ -1,3 +1,8 @@
+<?php
+// include database connection file
+include_once("../admin/config.php");
+$result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -66,7 +71,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="../index.html">
+      <a class="navbar-brand logo" href="../index.php">
         <img class="logo-default" src="images/logo.png" alt="logo"/>
         <img class="logo-white" src="images/logo-white.png" alt="logo"/>
       </a>
@@ -79,32 +84,19 @@ Fixed Navigation
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav ml-auto text-center">
 		      <li class="nav-item ">
-			      <a class="nav-link " href="../index.html">Beranda</a>
+			      <a class="nav-link " href="../../perpustakaan/">Beranda</a>
 		      </li>
           <li class="nav-item  active ">
-            <a class="nav-link" href="tentang.html">Tentang</a>
+            <a class="nav-link" href="tentang.php">Tentang</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="layanan.html">Layanan</a>
+            <a class="nav-link" href="katalog.php">Katalog Buku</a>
+          </li>
+		      <li class="nav-item ">
+            <a class="nav-link" href="kontak.php">Kontak</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="katalog.html">Katalog Buku</a>
-          </li>
-		  <li class="nav-item ">
-            <a class="nav-link" href="kontak.html">Kontak</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="404.html">404 Page</a>
-              <a class="dropdown-item" href="blog.html">Berita Acara</a>
-            </div>
+            <a class="nav-link" href="login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -136,9 +128,11 @@ End Fixed Navigation
 		<div class="row">
 			<div class="col-md-6 mt-20">
 				<h2>Sejarah Perpustakaan<br></h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat voluptate molestias, quaerat quo natus dolor harum voluptatibus modi dicta ducimus.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quae officia earum dolore est quaerat cupiditate voluptatibus id, magni alias veniam voluptate, libero explicabo, distinctio atque!</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, fugit itaque ratione incidunt voluptas. Quaerat quidem dolor, quisquam amet inventore quas adipisci ea sint qui placeat beatae molestias aut, aperiam!</p>
+        <?php
+        while($user_data = mysqli_fetch_array($result)){
+				echo "<p>".$user_data['sejarah']."</p>";
+        
+        ?>
 			</div>
 			<div class="col-md-6">
 				<img class="img-fluid" src="images/company/sejarah.jpeg" alt="">
@@ -154,13 +148,16 @@ End Fixed Navigation
 		<div class="row">
 			<div class="col-md-6">
 				<h3>Misi Kami</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere in suscipit voluptatum totam dolores assumenda vel, quia earum voluptatem blanditiis vero accusantium saepe aliquid nulla nemo accusamus, culpa inventore! Culpa nemo aspernatur tenetur, at quam aliquid reprehenderit obcaecati dicta illum mollitia, perferendis hic, beatae voluptates? Ex labore, obcaecati harum nam.</p>
-				<!-- <img src="images/company/company-image-2.jpg" alt="" class="img-fluid mt-30"> -->
+        <?php
+				echo "<p>".$user_data['visi']."</p>";
+        ?>
 			</div>
 			<div class="col-md-6">
 				<h3>Visi Kami</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere in suscipit voluptatum totam dolores assumenda vel, quia earum voluptatem blanditiis vero accusantium saepe aliquid nulla nemo accusamus, culpa inventore! Culpa nemo aspernatur tenetur, at quam aliquid reprehenderit obcaecati dicta illum mollitia, perferendis hic, beatae voluptates? Ex labore, obcaecati harum nam.</p>
-				<!-- <img src="images/company/company-image-3.jpg" alt="" class="img-fluid mt-30"> -->
+        <?php
+				echo "<p>".$user_data['misi']."</p>";
+        }
+        ?>
 			</div>
 		</div>
 	</div>
@@ -170,151 +167,36 @@ End Fixed Navigation
 		=========================================== -->
     <section class="team" id="team">
       <div class="container">
-        <div class="row">
-    
-          <!-- section title -->
-          <div class="col-12">
+
+        <!-- section title -->
+        <div class="col-12">
             <div class="title text-center ">
               <h2>Struktur Kepengurusan</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque quasi tempora obcaecati, quis
-                similique quos.</p>
               <div class="border"></div>
             </div>
           </div>
-          <!-- /section title -->
-    
-          <!-- team member -->
-          <div class="col-md-4 col-sm-6 ">
-            <div class="team-member text-center">
-              <div class="member-photo">
-                <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-1.jpg" alt="Meghna">
-                <!-- /member photo -->
-    
-                <!-- member social profile -->
-                <div class="mask">
-                  <ul class="clearfix">
-                    <li><a href="#"><i class="tf-ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-google-outline"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-dribbble"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /member social profile -->
-              </div>
-    
-              <!-- member name & designation -->
-              <div class="member-content">
-                <h3>Michael Jonson</h3>
-                <span>Head Of Marketing</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
-              </div>
-              <!-- /member name & designation -->
-    
-            </div>
-          </div>
-          <!-- end team member -->
-    
-          <!-- team member -->
-          <div class="col-md-4 col-sm-6 ">
-            <div class="team-member text-center">
-              <div class="member-photo">
-                <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-2.jpg" alt="Meghna">
-                <!-- /member photo -->
-    
-                <!-- member social profile -->
-                <div class="mask">
-                  <ul class="clearfix">
-                    <li><a href="#"><i class="tf-ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-google-outline"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-dribbble"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /member social profile -->
-              </div>
-    
-              <!-- member name & designation -->
-              <div class="member-content">
-                <h3>Carrick Mollenkamp</h3>
-                <span>Web Developer</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
-              </div>
-              <!-- /member name & designation -->
-            </div>
-          </div>
-          <!-- end team member -->
-    
-          <!-- team member -->
-          <div class="col-md-4 col-sm-6 ">
-            <div class="team-member text-center">
-              <div class="member-photo">
-                <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-3.jpg" alt="Meghna">
-                <!-- /member photo -->
-    
-                <!-- member social profile -->
-                <div class="mask">
-                  <ul class="clearfix">
-                    <li><a href="#"><i class="tf-ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-google-outline"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-dribbble"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /member social profile -->
-              </div>
-    
-              <!-- member name & designation -->
-              <div class="member-content">
-                <h3>David Gauthier</h3>
-                <span>Head Of Management</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
-              </div>
-              <!-- /member name & designation -->
-    
-            </div>
-          </div>
-          <!-- end team member -->
+          <!-- /section title -->  
 
-          <!-- team member -->
-          <div class="col-md-4 col-sm-6 ">
-            <div class="team-member text-center">
-              <div class="member-photo">
-                <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-2.jpg" alt="Meghna">
-                <!-- /member photo -->
-    
-                <!-- member social profile -->
-                <div class="mask">
-                  <ul class="clearfix">
-                    <li><a href="#"><i class="tf-ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-google-outline"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-dribbble"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /member social profile -->
-              </div>
-    
-              <!-- member name & designation -->
-              <div class="member-content">
-                <h3>Carrick Mollenkamp</h3>
-                <span>Web Developer</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
-              </div>
-              <!-- /member name & designation -->
-            </div>
-          </div>
-          <!-- end team member -->
 
+        <?php
+          $stmt_struktur = $pdo_conn->prepare("SELECT * FROM l_struktur ORDER BY id ");
+          $stmt_struktur->execute();
+          $result_struktur = $stmt_struktur->fetchAll();
+        ?>
+        <div class="row">
+        <?php
+        		if(!empty($result_struktur)) { 
+        		foreach($result_struktur as $row) {
+        ?>
+          
+    
           <!-- team member -->
           <div class="col-md-4 col-sm-6 ">
+            <br>
             <div class="team-member text-center">
               <div class="member-photo">
                 <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-2.jpg" alt="Meghna">
+                <?php echo"<img class='img-fluid' src='images/team/$row[foto]' alt='Meghna'>"?>
                 <!-- /member photo -->
     
                 <!-- member social profile -->
@@ -331,45 +213,26 @@ End Fixed Navigation
     
               <!-- member name & designation -->
               <div class="member-content">
-                <h3>Carrick Mollenkamp</h3>
-                <span>Web Developer</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
+                <?php
+                // $result = mysqli_query($mysqli, "SELECT * FROM struktur");
+                // while($user_data = mysqli_fetch_array($result)){
+                // echo"<h3>".$user_data['nama']."</h3>";
+                // echo"<span>".$user_data['jabatan']."</span>";
+                // }
+                ?>
+                <h3><?php echo $row["nama"]; ?></h3>
+                <span><?php echo $row["jabatan"];?></span>
+                
               </div>
               <!-- /member name & designation -->
+    
             </div>
           </div>
-          <!-- end team member -->
-
-          <!-- team member -->
-          <div class="col-md-4 col-sm-6 ">
-            <div class="team-member text-center">
-              <div class="member-photo">
-                <!-- member photo -->
-                <img class="img-fluid" src="images/team/member-2.jpg" alt="Meghna">
-                <!-- /member photo -->
-    
-                <!-- member social profile -->
-                <div class="mask">
-                  <ul class="clearfix">
-                    <li><a href="#"><i class="tf-ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-google-outline"></i></a></li>
-                    <li><a href="#"><i class="tf-ion-social-dribbble"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /member social profile -->
-              </div>
-    
-              <!-- member name & designation -->
-              <div class="member-content">
-                <h3>Carrick Mollenkamp</h3>
-                <span>Web Developer</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur necessitatibus ullam, culpa odio.</p>
-              </div>
-              <!-- /member name & designation -->
-            </div>
-          </div>
-          <!-- end team member -->
+          <!-- end team member -->        
+          <?php
+					}
+					}
+				?>
         </div> <!-- End row -->
       </div> <!-- End container -->
     </section> <!-- End section -->
@@ -478,7 +341,7 @@ Start Call To Action
             <li><h3>Layanan </h3></li>
             <li><a href="#">Pemesanan Buku</a></li>
             <li><a href="#">Peminjaman Buku</a></li>
-            <li><a href="#">Informasin Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -512,7 +375,9 @@ Start Call To Action
     </div> <!-- end container -->
   </div>
   <div class="footer-bottom">
-    <h5>Copyright 2022. All rights reserved.</h5>
+  <h5>Copyright &copy; <script type="text/javascript">
+      new Date().getFullYear()>document.write(""+new Date().getFullYear());
+      </script> All rights reserved.</h5>
     <h6><a href="">Diskominfotik Kota Banjarmasin </a></h6>
   </div>
 </footer> <!-- end footer -->

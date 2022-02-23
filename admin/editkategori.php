@@ -15,9 +15,10 @@ if(isset($_POST['update']))
     $id = $_POST['id'];
     
     $nama_kategori=$_POST['nama_kategori'];
+    $foto=$_POST['foto'];
         
     // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_kategori SET nama_kategori='$nama_kategori' WHERE id=$id");
+    $result = mysqli_query($mysqli, "UPDATE m_kategori SET nama_kategori='$nama_kategori' , foto='$foto' WHERE id=$id");
     
     // Redirect to homepage to display updated user in list
     header("Location: kategoribuku.php");
@@ -34,6 +35,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori WHERE id=$id");
 while($user_data = mysqli_fetch_array($result))
 {
     $nama_kategori = $user_data['nama_kategori'];
+    $foto = $user_data['foto'];
 }
 ?>
 <!DOCTYPE html>
@@ -89,12 +91,12 @@ while($user_data = mysqli_fetch_array($result))
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="user.php">
                     <i class="fa fa-user"></i>
                     <span>User</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="kategoribuku.php">
                     <i class="fa fa-filter"></i>
                     <span>Kategori Buku</span></a>
@@ -123,6 +125,21 @@ while($user_data = mysqli_fetch_array($result))
                 <a class="nav-link" href="kritikdanrequest.php">
                     <i class="fa fa-bell"></i>
                     <span>Kritik dan Request Buku</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fa fa-wrench"></i>
+                    <span>Konfigurasi</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tentang.php">Tentang</a>
+                        <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
+                        <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
+                    </div>
+                </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -170,9 +187,13 @@ while($user_data = mysqli_fetch_array($result))
                                 <label for='exampleFormControlInput1'>Nama Kategori</label>
                                 <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_kategori" value="<?php echo $nama_kategori;?>">
                                 </div>
+                                <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Cover</label><br>
+                                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+                                </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <a href="kategoribuku.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
                                 <button type="submit" name="update" value="Edit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </form>   
@@ -222,7 +243,7 @@ while($user_data = mysqli_fetch_array($result))
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

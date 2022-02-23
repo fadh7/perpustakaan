@@ -32,7 +32,8 @@
   <!-- Slick Carousel -->
   <link rel="stylesheet" href="plugins/slick/slick.css">
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">  
+  <link rel="stylesheet" href="css/style.css"> 
+  
 
 </head>
 
@@ -66,7 +67,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="../index.html">
+      <a class="navbar-brand logo" href="../perpustakaan/">
         <img class="logo-default" src="images/logo.png" alt="logo"/>
         <img class="logo-white" src="images/logo-white.png" alt="logo"/>
       </a>
@@ -78,34 +79,20 @@ Fixed Navigation
 
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav ml-auto text-center">
-          <li class="nav-item ">
-			      <a class="nav-link " href="../index.html">Beranda</a>
-		      </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="../perpustakaan/">Beranda</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="tentang.html">Tentang</a>
+            <a class="nav-link" href="tentang.php">Tentang</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="layanan.html">Layanan</a>
+            <a class="nav-link" href="katalog.php">Katalog Buku</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="katalog.html">Katalog Buku</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="kontak.html">Kontak</a>
+            <a class="nav-link" href="kontak.php">Kontak</a>
           </li>
 		      <li class="nav-item ">
-            <a class="nav-link" href="login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="404.html">404 Page</a>
-              <a class="dropdown-item" href="blog.html">Berita Acara</a>
-            </div>
+            <a class="nav-link" href="login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -117,149 +104,105 @@ Fixed Navigation
 End Fixed Navigation
 ==================================== -->
 
-<section class="single-page-header">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<h2>Blog</h2>
-				<ol class="breadcrumb header-bradcrumb">
-				  <li><a href="index.html">Home</a></li>
-				  <li class="active">Blog</li>
-				</ol>
+
+	<div class="hero-slider">
+	<div class="slider-item th-fullpage hero-area" style="background-image: url(images/slider/slider-1.jpeg);">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">Selamat Datang di Website<br>
+						Perpustakaan Daerah Banjarmasin</h1>
+					<p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Menyediakan layanan informasi serta peminjaman buku <br> veritatis ipsa aliquam tempore nostrum id
+						officia quaerat eum corrupti, <br> ipsa aliquam velit.</p>
+					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-main" href="login.php">Login</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</section>
-
-
-
-<section class="posts section">
-	<div class="container">
-		<div class="row">
-			<!-- /section title -->
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 clearfix ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-1.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">Reasons to Smile</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
+	<div class="slider-item th-fullpage hero-area" style="background-image: url(images/slider/slider-2.jpeg);">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".1"> WEBSITE SIMPUSDA <br> 
+						</h1>
+					<p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">Sistem Perpustakaan Daerah Banjarmasin ini menyediakan layanan peminjaman buku dan e-book
+						<br> Serta menyediakan informasi terkait buku dan perpustakaan.</p>
+					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8"  class="btn btn-main" href="daftar.php">Daftar Member</a>
 				</div>
-			</article>
-			<!-- /single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-2.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">A Few Moments</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
-				</div>
-			</article>
-			<!-- end single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-3.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">Hints for Life</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
-				</div>
-			</article>
-			<!-- /section title -->
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 clearfix ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-4.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">Looking Back</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
-				</div>
-			</article>
-			<!-- /single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-5.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">Laugh and Cry</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
-				</div>
-			</article>
-			<!-- end single blog post -->
-
-			<!-- single blog post -->
-			<article class="col-md-4 col-sm-6 col-xs-12 ">
-				<div class="post-item">
-					<div class="media-wrapper">
-						<img src="images/blog/post-6.jpg" alt="amazing caves coverimage" class="img-fluid">
-					</div>
-
-					<div class="content">
-						<h3><a href="single-post.html">Regret No More</a></h3>
-						<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-							moon officia aute, non skateboard dolor brunch.</p>
-						<a class="btn btn-main" href="single-post.html">Read more</a>
-					</div>
-				</div>
-			</article>
+			</div>
 		</div>
 	</div>
-</section>
+</div>
 
+<!--
+		Start Blog Section
+		=========================================== -->
+    <?php
+    // include database connection file
+    include_once("../admin/config.php");
+    $result = mysqli_query($mysqli, "SELECT * FROM l_berita");
+    ?>
 
+<section class="blog" id="blog">
+	<div class="container">
+        <?php
+          $stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita ORDER BY id ");
+          $stmt_berita->execute();
+          $result_berita = $stmt_berita->fetchAll();
+        ?>
+		<div class="row">
+			<!-- section title -->
+			<div class="col-12">
+				<div class="title text-center ">
+					<h2> Berita <span class="color">Acara</span></h2>
+					<div class="border"></div>
+				</div>
+			</div>
+			<!-- /section title -->
+			<!-- single blog post -->
+      <?php
+        		if(!empty($result_berita)) { 
+        		foreach($result_berita as $row) {
+        ?>
+        
+			  <article class="col-md-4 col-sm-6 col-xs-12 clearfix ">
+				<div class="post-item">
+					<div class="media-wrapper">
+						<?php echo "<img src='images/blog/$row[foto]' alt='amazing caves coverimage' class='img-fluid'>"?>
+					</div>
 
-
+					<div class="content">
+          <?php echo "<h3><a href='single-post.php?id=$row[id]'>$row[judul]</a></h3>"?>
+						<?php echo "<p>$row[keterangan]</p>"?>
+            <a class='btn btn-main' href="single-post.php?id=<?php echo $row['id']; ?>">Baca selengkapnya</a>
+					</div>
+				</div>
+			</article>
+			<!-- /single blog post -->
+      <?php
+            }
+          }
+          ?>
+		</div> <!-- end row -->
+	</div> <!-- end container -->
+</section> <!-- end section -->
 
 <footer id="footer" class="bg-one">
   <div class="top-footer">
     <div class="container">
       <div class="row">
         <div class="col-sm-3 col-md-3 col-lg-3">
-          <h3>about</h3>
-          <p>Integer posuere erat a ante venenati dapibus posuere velit aliquet. Fusce dapibus, tellus cursus commodo, tortor mauris sed posuere.</p>
+          <h3>Tentang Website</h3>
+          <p>Sistem Perpustakaan Daerah Banjarmasin ini menyediakan layanan peminjaman buku dan e-book, Serta menyediakan informasi terkait buku dan perpustakaan.</p>
         </div>
         <!-- End of .col-sm-3 -->
 
         <div class="col-sm-3 col-md-3 col-lg-3">
           <ul>
-            <li><h3>Our Services</h3></li>
-            <li><a href="#">Graphic Design</a></li>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
+            <li><h3>Layanan </h3></li>
+            <li><a href="#">Pemesanan Buku</a></li>
+            <li><a href="#">Peminjaman Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -280,7 +223,7 @@ End Fixed Navigation
 
         <div class="col-sm-3 col-md-3 col-lg-3">
           <ul>
-            <li><h3>Connect with us Socially</h3></li>
+            <li><h3>Sosial Media</h3></li>
             <li><a href="#">Facebook</a></li>
             <li><a href="#">Twitter</a></li>
             <li><a href="#">Youtube</a></li>
@@ -293,7 +236,9 @@ End Fixed Navigation
     </div> <!-- end container -->
   </div>
   <div class="footer-bottom">
-    <h5>Copyright 2022. All rights reserved.</h5>
+    <h5>Copyright &copy; <script type="text/javascript">
+      new Date().getFullYear()>document.write(""+new Date().getFullYear());
+      </script> All rights reserved.</h5>
     <h6><a href="">Diskominfotik Kota Banjarmasin </a></h6>
   </div>
 </footer> <!-- end footer -->
@@ -301,7 +246,7 @@ End Fixed Navigation
 
     <!-- end Footer Area
     ========================================== -->
-
+    
 
     
     <!-- 

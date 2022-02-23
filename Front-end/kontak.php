@@ -1,3 +1,10 @@
+<?php
+// Create database connection using config file
+include_once("../admin/config.php");
+
+// Fetch all users data from database
+$result = mysqli_query($mysqli, "SELECT * FROM l_kritik ORDER BY id DESC");
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -66,7 +73,7 @@ Fixed Navigation
     <!-- main nav -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <!-- logo -->
-      <a class="navbar-brand logo" href="../index.html">
+      <a class="navbar-brand logo" href="../index.php">
         <img class="logo-default" src="images/logo.png" alt="logo"/>
         <img class="logo-white" src="images/logo-white.png" alt="logo"/>
       </a>
@@ -79,32 +86,19 @@ Fixed Navigation
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav ml-auto text-center">
           <li class="nav-item ">
-            <a class="nav-link " href="../index.html">Beranda</a>
+            <a class="nav-link " href="../../perpustakaan/">Beranda</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="tentang.html">Tentang</a>
+            <a class="nav-link" href="tentang.php">Tentang</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="layanan.html">Layanan</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="katalog.html">Katalog Buku</a>
+            <a class="nav-link" href="katalog.php">Katalog Buku</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="kontak.html">Kontak</a>
+            <a class="nav-link" href="kontak.php">Kontak</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="login.html">Login</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Lain-Lain
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="404.html">404 Page</a>
-              <a class="dropdown-item" href="blog.html">Berita Acara</a>
-            </div>
+            <a class="nav-link" href="login.php">Login</a>
           </li>
         </ul>
       </div>
@@ -139,8 +133,7 @@ End Fixed Navigation
 			<!-- section title -->
 			<div class="col-12">
 			<div class="title text-center" >
-				<h2>Get In Touch</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate facilis eveniet maiores ab maxime nam ut numquam molestiae quaerat incidunt?</p>
+        <h4> SEND US <span class="color">A MESSAGE</span></h4>
 				<div class="border"></div>
 			</div>
 			</div>
@@ -181,36 +174,56 @@ End Fixed Navigation
 			<!-- / End Contact Details -->
 				
 			<!-- Contact Form -->
-			<div class="contact-form col-md-6 " >
-				<form id="contact-form" method="post" role="form">
-					<div class="form-group">
-						<input type="text" placeholder="Your Name" class="form-control" name="name" id="name">
-					</div>
+			<div class="contact-form col-md-6 " ><br>
+      <form action="" method="POST" name="form1">
+            <div class='form-group'>
+              <input type='text' placeholder="Your Name" class='form-control' name="nama" required>
+            </div>
+            <div class='form-group'>
+                <input type='email' placeholder="Your Email" class='form-control' name="email" required>
+              </div>
+              <div class='form-group'>
+                <input type='text' placeholder="Your Phone" class='form-control' onkeypress="return event.charCode <=57" maxlength="14" name="phone" required>
+              </div>
+              <div class="form-group">
+                <select class="form-control" id="exampleFormControlSelect1" name="subjek" required>
+                  <option value=""></option>
+                  <option value="Request Buku">Request Buku</option>
+                  <option value="Kritik dan Saran">Kritik dan Saran</option>
+                </select>
+              </div>
+              <div class='form-group'>
+              <textarea rows="6" placeholder="Message" class='form-control' name="isi" required></textarea>
+            </div>
+              <div class='form-group'>
+              <input type='date' class='form-control' name="tanggal_kritik" required>
+            </div>
+              <div id='cf-submit'>  
+              <button type="submit" name="Submit" id="contact-submit" class="btn btn-transparent" value="Add" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
+          <?php
+          if(isset($_POST['Submit'])){
+            //$id = $_POST['id'];
+            $nama = $_POST['nama'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $subjek = $_POST['subjek'];
+            $isi = $_POST['isi'];
+            $tanggal_kritik = $_POST['tanggal_kritik'];
+
+            //include database connection file
+            include('config.php');
+
+            //insert user data into table
+            $result = mysqli_query($mysqli, 'INSERT INTO l_kritik(nama, email, phone, subjek, isi, tanggal_kritik) VALUES ("'.$nama.'","'.$email.'","'.$phone.'","'.$subjek.'","'.$isi.'","'.$tanggal_kritik.'")');
+
+            //show message when user added
+            //echo "User added successfully. <a href = 'user.php'>View Users </a>";
+            echo "<script>window.location.href='kontak.php';</script>";
+          }
+          ?>
 					
-					<div class="form-group">
-						<input type="email" placeholder="Your Email" class="form-control" name="email" id="email">
-					</div>
-					
-					<div class="form-group">
-						<input type="text" placeholder="Subject" class="form-control" name="subject" id="subject">
-					</div>
-					
-					<div class="form-group">
-						<textarea rows="6" placeholder="Message" class="form-control" name="message" id="message"></textarea>	
-					</div>
-					
-					<div id="success" class="success">
-						Thank you. The Mailman is on His Way :)
-					</div>
-					
-					<div id="error" class="error">
-						Sorry, don't know what happened. Try later :(
-					</div>
-					<div id="cf-submit">
-						<input type="submit" id="contact-submit" class="btn btn-transparent" value="Submit">
-					</div>						
-					
-				</form>
 			</div>
 			<!-- ./End Contact Form -->
 		
@@ -244,7 +257,7 @@ End Fixed Navigation
             <li><h3>Layanan </h3></li>
             <li><a href="#">Pemesanan Buku</a></li>
             <li><a href="#">Peminjaman Buku</a></li>
-            <li><a href="#">Informasin Buku</a></li>
+            <li><a href="#">informasi Buku</a></li>
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -278,7 +291,9 @@ End Fixed Navigation
     </div> <!-- end container -->
   </div>
   <div class="footer-bottom">
-    <h5>Copyright 2022. All rights reserved.</h5>
+  <h5>Copyright &copy; <script type="text/javascript">
+      new Date().getFullYear()>document.write(""+new Date().getFullYear());
+      </script> All rights reserved.</h5>
     <h6><a href="">Diskominfotik Kota Banjarmasin </a></h6>
   </div>
 </footer> <!-- end footer -->
