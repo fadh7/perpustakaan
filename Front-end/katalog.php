@@ -214,7 +214,7 @@ End Fixed Navigation
                           <div class="iq-card-body p-0">
                              <div class="d-flex align-items-center">
                                 <div class="col-6 p-0 position-relative image-overlap-shadow">
-                                   <?php echo "<a href='javascript:void();'><img class='img-fluid rounded w-100' src='images/book-dec/$row[foto]' alt=''></a>"?>
+                                   <?php echo "<a href='javascript:void();'><img class='img-fluid rounded w-100' src='images/browse-books/$row[foto]' alt=''></a>"?>
                                    <div class="view-book">
                                       <a href="detail-buku.php?id=<?php echo $row ['id']?>" class="btn btn-sm btn-primary">Lihat Buku</a>
                                    </div>
@@ -274,7 +274,7 @@ End Fixed Navigation
                           <div class="iq-card-body p-0">
                              <div class="d-flex align-items-center">
                                 <div class="col-6 p-0 position-relative image-overlap-shadow">
-                                   <?php echo "<a href='javascript:void();'><img class='img-fluid rounded w-100' src='images/book-dec/$row[foto]' alt=''></a>"?>
+                                   <?php echo "<a href='javascript:void();'><img class='img-fluid rounded w-100' src='images/category/$row[foto]' alt=''></a>"?>
                                    <div class="view-book">
                                       <a href="kategori.php?id=<?php echo $row ['id']?>" class="btn btn-sm btn-primary">Lihat Kategori</a>
                                    </div>

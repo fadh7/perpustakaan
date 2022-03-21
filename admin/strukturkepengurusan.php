@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
+$stmt_struktur = $pdo_conn->prepare("SELECT * FROM l_struktur");
+$stmt_struktur->execute();
+$result_struktur = $stmt_struktur->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +46,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -55,7 +57,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -167,7 +169,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
                                       <tbody>
                                         <?php
                                         $no = 1;
-                                          while($user_data = mysqli_fetch_array($result)){
+                                          foreach($result_struktur as $user_data){
 
                                             echo "<tr>";
                                             echo "<td>".$no++."</td>";
@@ -231,10 +233,11 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
             include('config.php');
 
             //insert user data into table
-            $result = mysqli_query($mysqli, 'INSERT INTO l_struktur(nama, jabatan, foto) VALUES ("'.$nama.'","'.$jabatan.'","'.$foto.'")');
+            $sql = "INSERT INTO l_struktur (nama, jabatan, foto) VALUES (:nama, :jabatan, :foto)";
+            $stmt = $pdo_conn->prepare($sql);
+            $result = $stmt->execute(array
+            (':nama' =>$_POST ['nama'],':jabatan' =>$_POST ['jabatan'],':foto' =>$_POST ['foto']));
 
-            //show message when user added
-            //echo "User added successfully. <a href = 'user.php'>View Users </a>";
             echo "<script>window.location.href='strukturkepengurusan.php';</script>";
           }
           ?>

@@ -51,7 +51,7 @@
                                             <input type="text" class="form-control form-control-user" name="username" placeholder="Username" required="">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password" placeholder="Password" required="">
+                                            <input type="password" class="form-control form-control-user" name="password" placeholder="Password" minlength="8" required="">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">

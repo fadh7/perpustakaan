@@ -2,16 +2,16 @@
 // include database connection file
 include_once("../admin/config.php");
    $id = $_GET['id'];
-   $stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_buku WHERE id=$id");
-   $stmt_kategori->execute();
-   $result_kategori = $stmt_kategori->fetchAll();
+   $stmt_buku = $pdo_conn->prepare("SELECT * FROM m_buku WHERE m_kategori_id=$id");
+   $stmt_buku->execute();
+   $result_buku = $stmt_buku->fetchAll();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
-<html> <!--<![endif]-->
+<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="description" content="Bingo One page parallax responsive HTML Template ">
@@ -221,8 +221,8 @@ End Fixed Navigation
               <div class="iq-card-body">  
                  <div class="row">
                      <?php
-                        if(!empty($result_kategori)) { 
-                        foreach($result_kategori as $row) {
+                        if(!empty($result_buku)) { 
+                        foreach($result_buku as $row) {
                      ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">

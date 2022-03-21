@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_statistik ORDER BY tanggal DESC");
+$stmt_statistik = $pdo_conn->prepare("SELECT * FROM l_statistik ORDER BY tanggal DESC");
+$stmt_statistik->execute();
+$result_statistik = $stmt_statistik->fetchAll();
 // $query = $mysqli->query($result);
 ?>
 
@@ -43,7 +45,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_statistik ORDER BY tanggal DESC
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -54,7 +56,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_statistik ORDER BY tanggal DESC
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -163,7 +165,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_statistik ORDER BY tanggal DESC
                                       <tbody>
                                       <?php
                                       $no = 1;
-                                      while($user_data = mysqli_fetch_array($result)){ ?>
+                                      foreach($result_statistik as $user_data){ ?>
 
                                           <tr>
                                             <td><?php echo $no++;?></td>

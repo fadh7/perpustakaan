@@ -3,46 +3,40 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
+$stmt_user = $pdo_conn->prepare("SELECT * FROM m_user WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_user->execute();
+$result_user = $stmt_user->fetchAll();
+
 ?>
 <?php
 // include database connection file
 include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
-if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
-    
-    $username=$_POST['username'];
-    $password=$_POST['password'];
-    $nama_depan=$_POST['nama_depan'];
-    $nama_belakang=$_POST['nama_belakang'];
-    $m_role_id=$_POST['m_role_id'];
-        
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_user SET username='$username',password='$password',nama_depan='$nama_depan',nama_belakang='$nama_belakang',m_role_id='$m_role_id' WHERE id=$id");
-    
-    // Redirect to homepage to display updated user in list
-    header("Location: user.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM m_user WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $username = $user_data['username'];
-    $password = $user_data['password'];
-    $nama_depan = $user_data['nama_depan'];
-    $nama_belakang = $user_data['nama_belakang'];
-    $m_role_id = $user_data['m_role_id'];
-    
+if(isset($_POST["update"]))
+{       
+    // update user
+    $stmt=$pdo_conn->prepare("UPDATE m_user SET username=:username,password=:password,nama_depan=:nama_depan,nama_belakang=:nama_belakang,m_role_id=:m_role_id WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':username', $_POST['username']);
+    $stmt->bindParam(':password', $_POST['password']);
+    $stmt->bindParam(':nama_depan', $_POST['nama_depan']);
+    $stmt->bindParam(':nama_belakang', $_POST['nama_belakang']);
+    $stmt->bindParam(':m_role_id', $_POST['m_role_id']);
+    $user = $stmt->execute();
+    if($user) {
+        // Redirect to homepage to display updated user in list
+        echo '<script type="text/javascript">'; 
+        echo 'alert("User Berhasil Diupdate !");'; 
+        echo 'window.location.href = "user.php";';
+        echo '</script>';
+    }
+    else{
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Upload File Gagal!");'; 
+        echo 'window.location.href = "edituser.php";';
+        echo '</script>';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -83,7 +77,7 @@ while($user_data = mysqli_fetch_array($result))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -94,7 +88,7 @@ while($user_data = mysqli_fetch_array($result))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -189,31 +183,33 @@ while($user_data = mysqli_fetch_array($result))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
+                        <form action="" method="POST" name="form1" enctype="multipart/form-data">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Username</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" value="<?php echo $username;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" value="<?php echo $result_user[0]['username'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Password</label>
-                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" value="<?php echo $password;?>">
+                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" value="<?php echo $result_user[0]['password'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Depan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" value="<?php echo $nama_depan;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" value="<?php echo $result_user[0]['nama_depan'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Belakang</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" value="<?php echo $nama_belakang;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" value="<?php echo $result_user[0]['nama_belakang'];?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">role</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" value="<?php echo $m_role_id;?>">
+                                    <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" value="<?php echo $result_user[0]['m_role_id'];?>">
                                     <?php
-                                    $result = mysqli_query($mysqli, "SELECT * FROM m_role");
-                                    while($user_data = mysqli_fetch_array($result)){
+                                    $stmt_role = $pdo_conn->prepare("SELECT * FROM m_role");
+                                    $stmt_role->execute();
+                                    $result_role = $stmt_role->fetchAll();
+                                   foreach($result_role as $user_data){
                                         
-                                        if($user_data['id'] == $m_role_id )
+                                        if($result_user[0]['m_role_id'] == 2)
                                         {
                                             echo "<option value='$user_data[id]' selected>$user_data[nama_role]</option>";
                                         }else 

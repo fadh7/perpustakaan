@@ -2,7 +2,10 @@
 
   include_once("../admin/config.php");
   $id = $_GET['id'];
-  $result = mysqli_query($mysqli, "SELECT * FROM m_buku WHERE id=$id");
+  $stmt_buku = $pdo_conn->prepare("SELECT * FROM m_buku WHERE id=$id");
+  $stmt_buku->execute();
+  $result_buku = $stmt_buku->fetchAll();
+  $kategori;
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -180,10 +183,14 @@ End Fixed Navigation
                                      </ul>
                                   </div> -->
                                   <div class="col-9">
-                                  <?php while($row = mysqli_fetch_array($result)){?>
+                                    <?php
+                                       if(!empty($result_buku)) { 
+                                       foreach($result_buku as $row) {
+                                          $kategori = $row['m_kategori_id'];
+                                    ?>
                                      <ul id="description-slider" class="list-inline p-0 m-0  d-flex align-items-center">
                                            <a href="javascript:void(0);">
-                                           <?php echo "<img src='images/book-dec/$row[foto]' class='img-fluid w-100 rounded' alt=''>";?>
+                                           <?php echo "<img src='images/browse-books/$row[foto]' class='img-fluid w-100 rounded' alt=''>";?>
                                            </a>
                                         </li>
                                      </ul>
@@ -221,113 +228,76 @@ End Fixed Navigation
                          </div>
                            <?php
                               }
+                           }
                            ?>
                       </div>
                    </div>
                 </div>
              </div>
           </div>
+          <?php
+          $stmt_bukusejenis = $pdo_conn->prepare("SELECT * FROM m_buku WHERE m_kategori_id=$kategori AND id!=$id ORDER BY RAND() LIMIT 4");
+          $stmt_bukusejenis->execute();
+          $result_bukusejenis = $stmt_bukusejenis->fetchAll();
+          ?>
           <div class="col-lg-12">
-            <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-               <div class="iq-card-header d-flex justify-content-between align-items-center position-relative">
-                  <div class="iq-header-title">
-                     <h4 class="card-title mb-0">Buku Sejenis</h4>
-                  </div>
-                  <div class="iq-card-header-toolbar d-flex align-items-center">
-                     <a href="kategori.html" class="btn btn-white view-more">Lihat Selengkapnya</a>
-                  </div>
-               </div>
-               <div class="iq-card-body single-similar-contens">
-                  <ul id="single-similar-slider" class="list-inline p-0 mb-0 row">
-                     <li class="col-md-3">
-                        <div class="row align-items-center">
-                           <div class="col-5">
-                              <div class="position-relative image-overlap-shadow">
-                                 <a href="javascript:void();"><img class="img-fluid rounded w-100" src="images/similar-books/01.jpg" alt=""></a>
-                                 <div class="view-book">
-                                    <a href="detail-buku.html" class="btn btn-sm btn-primary">Lihat Buku</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-7 pl-0">
-                              <h6 class="mb-2">The Book of treasure Island find...</h6>
-                              <p class="text-body">Penulis : Tara Zona</p>
-                              <a href="detail-buku.html" class="text-dark" tabindex="-1">Baca Sekarang<i class="ri-arrow-right-s-line"></i></a>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="col-md-3">
-                        <div class="row align-items-center">
-                           <div class="col-5">
-                              <div class="position-relative image-overlap-shadow">
-                                 <a href="javascript:void();"><img class="img-fluid rounded w-100" src="images/similar-books/02.jpg" alt=""></a>
-                                 <div class="view-book">
-                                    <a href="detail-buku.html" class="btn btn-sm btn-primary">Lihat Buku</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-7 pl-0">
-                              <h6 class="mb-2">Set For Lifr Being Scott Trench..</h6>
-                              <p class="text-body">Penulis : Anna Rexia</p>
-                              <a href="detail-buku.html" class="text-dark" tabindex="-1">Baca Sekarang<i class="ri-arrow-right-s-line"></i></a>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="col-md-3">
-                        <div class="row align-items-center">
-                           <div class="col-5">
-                              <div class="position-relative image-overlap-shadow">
-                                 <a href="javascript:void();"><img class="img-fluid rounded w-100" src="images/similar-books/03.jpg" alt=""></a>
-                                 <div class="view-book">
-                                    <a href="detail-buku.html" class="btn btn-sm btn-primary">Lihat Buku</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-7 pl-0">
-                              <h6 class="mb-2">A Birth and Evolutions of the Soul...</h6>
-                              <p class="text-body">Penulis : Bill Emia</p>
-                              <a href="detail-buku.html" class="text-dark" tabindex="-1">Baca Sekarang<i class="ri-arrow-right-s-line"></i></a>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="col-md-3">
-                        <div class="row align-items-center">
-                           <div class="col-5">
-                              <div class="position-relative image-overlap-shadow">
-                                 <a href="javascript:void();"><img class="img-fluid rounded w-100" src="images/similar-books/04.jpg" alt=""></a>
-                                 <div class="view-book">
-                                    <a href="detail-buku.html" class="btn btn-sm btn-primary">Lihat Buku</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-7 pl-0">
-                              <h6 class="mb-2">The Nature of world Beautiful Places.</h6>
-                              <p class="text-body">Penulis : Hal Appeno</p>
-                              <a href="detail-buku.html" class="text-dark" tabindex="-1">Baca Sekarang<i class="ri-arrow-right-s-line"></i></a>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="col-md-3">
-                        <div class="row align-items-center">
-                           <div class="col-5">
-                              <div class="position-relative image-overlap-shadow">
-                                 <a href="javascript:void();"><img class="img-fluid rounded w-100" src="images/similar-books/05.jpg" alt=""></a>
-                                 <div class="view-book">
-                                    <a href="detail-buku.html" class="btn btn-sm btn-primary">Lihat Buku</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-7 pl-0">
-                              <h6 class="mb-2">The mackup magazine find books..</h6>
-                              <p class="text-body">Penulis : Zack Lee</p>
-                              <a href="detail-buku.html" class="text-dark" tabindex="-1">Baca Sekarang<i class="ri-arrow-right-s-line"></i></a>
-                           </div>
-                        </div>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>     
+           <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+              <div class="iq-card-header d-flex justify-content-between align-items-center position-relative">
+                 <div class="iq-header-title">
+                    <h4 class="card-title mb-0">Buku Sejenis</h4>
+                 </div>
+                 <div class="iq-card-header-toolbar d-flex align-items-center">                              
+                    <a href="kategori.php?id=<?php echo $kategori?>" class="btn btn-sm btn-white view-more">Lihat Selangkapnya</a>
+                 </div>
+              </div> 
+              <div class="iq-card-body">  
+                 <div class="row">
+                    <?php
+                        if(!empty($result_bukusejenis)) { 
+                        foreach($result_bukusejenis as $row) {
+                     ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                       <div class="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
+                          <div class="iq-card-body p-0">
+                             <div class="d-flex align-items-center">
+                                <div class="col-6 p-0 position-relative image-overlap-shadow">
+                                   <?php echo "<a href='javascript:void();'><img class='img-fluid rounded w-100' src='images/browse-books/$row[foto]' alt=''></a>"?>
+                                   <div class="view-book">
+                                      <a href="detail-buku.php?id=<?php echo $row ['id']?>" class="btn btn-sm btn-primary">Lihat Buku</a>
+                                   </div>
+                                </div>
+                                <div class="col-6">
+                                   <div class="mb-2">
+                                      <?php echo "<h6 class='mb-1'>$row[judul_buku]</h6>"?>
+                                      <?php echo "<p class='font-size-13 line-height mb-1'>$row[pengarang]</p>"?>
+                                      <div class="d-block line-height">
+                                         <span class="font-size-11 text-warning">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                         </span>                                             
+                                      </div>
+                                   </div>
+                                   
+                                   <div class="iq-product-action">
+                                      <a href="javascript:void();"><i class="ri-shopping-cart-2-fill text-primary"></i></a>
+                                      <a href="javascript:void();" class="ml-2"><i class="ri-heart-fill text-danger"></i></a>
+                                   </div>                                      
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <?php
+                        }
+                     }
+                     ?>
+                 </div>
+              </div>
+           </div>
+        </div>  
         </div>
         </div>
      </div>

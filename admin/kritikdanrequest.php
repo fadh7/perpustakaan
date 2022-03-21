@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_kritik");
+$stmt_kritik = $pdo_conn->prepare("SELECT * FROM l_kritik");
+$stmt_kritik->execute();
+$result_kritik = $stmt_kritik->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -164,7 +166,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_kritik");
                                       </thead>
                                       <tbody>
                                       <?php
-                                        while($user_data = mysqli_fetch_array($result)){
+                                        foreach($result_kritik as $user_data){
 
                                           echo "<tr>";
                                           echo "<td>".$user_data['id']."</td>";

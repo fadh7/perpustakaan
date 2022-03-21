@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_struktur ORDER BY id DESC");
+$stmt_struktur = $pdo_conn->prepare("SELECT * FROM l_struktur WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_struktur->execute();
+$result_struktur = $stmt_struktur->fetchAll();
 ?>
 <?php
 // include database connection file
@@ -11,33 +13,17 @@ include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
-    
-    $nama=$_POST['nama'];
-    $jabatan=$_POST['jabatan'];
-    $foto=$_POST['foto'];
-        
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE l_struktur SET nama='$nama',jabatan='$jabatan',foto='$foto' WHERE id=$id");
+{       
+    // update struktur
+    $stmt=$pdo_conn->prepare("UPDATE l_struktur SET nama=:nama,jabatan=:jabatan,foto=:foto WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':nama', $_POST['nama']);
+    $stmt->bindParam(':jabatan', $_POST['jabatan']);
+    $stmt->bindParam(':foto', $_POST['foto']);
+    $struktur = $stmt->execute();
     
     // Redirect to homepage to display updated user in list
     header("Location: strukturkepengurusan.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM l_struktur WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $nama = $user_data['nama'];
-    $jabatan = $user_data['jabatan'];
-    $foto = $user_data['foto'];
 }
 ?>
 <!DOCTYPE html>
@@ -78,7 +64,7 @@ while($user_data = mysqli_fetch_array($result))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -89,7 +75,7 @@ while($user_data = mysqli_fetch_array($result))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -185,15 +171,15 @@ while($user_data = mysqli_fetch_array($result))
                         <form action="" method="POST" name="form1">
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama" value="<?php echo $nama;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama" value="<?php echo $result_struktur[0]['nama'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Jabatan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan" value="<?php echo $jabatan;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan" value="<?php echo $result_struktur[0]['jabatan'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Gambar</label><br>
-                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value="<?php echo $foto;?>"><br>
+                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value=""><br>
                                     <i>*masukkan foto dengan rasio 1:1</i>
                                 </div>
                                 <div class='form-footer'>

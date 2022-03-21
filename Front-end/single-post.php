@@ -2,7 +2,9 @@
 
   include_once("../admin/config.php");
   $id = $_GET['id'];
-  $result = mysqli_query($mysqli, "SELECT * FROM l_berita WHERE id=$id");
+  $stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita WHERE id=$id");
+  $stmt_berita->execute();
+  $result_berita = $stmt_berita->fetchAll();
 ?>
 
 
@@ -131,7 +133,11 @@ End Fixed Navigation
     <div class="row">
       <div class="col-lg-8">
         <article class="post">
-        <?php while($row = mysqli_fetch_array($result)){?>
+        <?php ?>
+          <?php
+            if(!empty($result_berita)) { 
+            foreach($result_berita as $row) {
+          ?>
           <div class="post-image">
             <?php echo "<img class='img-fluid w-100' src='../Front-end/images/blog/$row[foto]' alt='post-image'>";?>
           </div>
@@ -152,6 +158,7 @@ End Fixed Navigation
             <?php echo "<p>$row[isi]</p>";?>
             <?php
               }
+            }
               ?>
           </div>
         </article>

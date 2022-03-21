@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
+$stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori");
+$stmt_kategori->execute();
+$result_kategori = $stmt_kategori->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +45,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -54,7 +56,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -165,7 +167,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
                                       <tbody>
                                         <?php
                                         $no = 1;
-                                          while($user_data = mysqli_fetch_array($result)){
+                                        foreach($result_kategori as $user_data){
 
                                             echo "<tr>";
                                             echo "<td>".$no++."</td>";
@@ -214,7 +216,6 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
         </div>
           <?php
           if(isset($_POST['Submit'])){
-            //$id = $_POST['id'];
             $nama_kategori = $_POST['nama_kategori'];
             $foto = $_POST['foto'];
 
@@ -222,11 +223,23 @@ $result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
             include('config.php');
 
             //insert user data into table
-            $result = mysqli_query($mysqli, 'INSERT INTO m_kategori (nama_kategori, foto) VALUES ("'.$nama_kategori.'","'.$foto.'")');
-
-            //show message when user added
-            //echo "User added successfully. <a href = 'user.php'>View Users </a>";
-            echo "<script>window.location.href='kategoribuku.php';</script>";
+            $sql = "INSERT INTO m_kategori (nama_kategori,foto) VALUES (:nama_kategori, :foto)";
+            $stmt = $pdo_conn->prepare($sql);
+            $result = $stmt->execute(array
+            (':nama_kategori'=>$_POST['nama_kategori'],':foto'=>$_POST['foto']));
+            if($result) {
+                // Redirect to homepage to display updated user in list
+                echo '<script type="text/javascript">'; 
+                echo 'alert("Kategori Berhasil Ditambahkan !");'; 
+                echo 'window.location.href = "kategoribuku.php";';
+                echo '</script>';
+            }
+            else{
+                echo '<script type="text/javascript">'; 
+                echo 'alert("Kategori Gagal Ditambahkan!");'; 
+                echo 'window.location.href = "kategoribuku.php";';
+                echo '</script>';
+            }
           }
           ?>
         </div>

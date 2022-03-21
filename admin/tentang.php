@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
+$stmt_tentang = $pdo_conn->prepare("SELECT * FROM l_tentang");
+$stmt_tentang->execute();
+$result_tentang = $stmt_tentang->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +46,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -54,7 +56,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -157,7 +159,7 @@ $result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
                                       <tbody>
                                         <?php
                                         $no = 1;
-                                          while($user_data = mysqli_fetch_array($result)){
+                                          foreach($result_tentang as $user_data){
 
                                             echo "<tr>";
                                             echo "<td>".$no++."</td>";

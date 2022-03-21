@@ -2,8 +2,6 @@
 // Create database connection using config file
 include_once("../admin/config.php");
 
-// Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_kritik ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -212,15 +210,17 @@ End Fixed Navigation
             $isi = $_POST['isi'];
             $tanggal_kritik = $_POST['tanggal_kritik'];
 
-            //include database connection file
-            include('config.php');
-
-            //insert user data into table
-            $result = mysqli_query($mysqli, 'INSERT INTO l_kritik(nama, email, phone, subjek, isi, tanggal_kritik) VALUES ("'.$nama.'","'.$email.'","'.$phone.'","'.$subjek.'","'.$isi.'","'.$tanggal_kritik.'")');
-
-            //show message when user added
-            //echo "User added successfully. <a href = 'user.php'>View Users </a>";
-            echo "<script>window.location.href='kontak.php';</script>";
+            $sql = "INSERT INTO l_kritik (nama, email, phone, subjek, isi, tanggal_kritik) VALUES (:nama, :email, :phone, :subjek, :isi ,:tanggal_kritik)";
+            $stmt = $pdo_conn->prepare($sql);
+            $result = $stmt->execute(array
+            (':nama'=>$_POST['nama'],':email'=>$_POST['email'],':phone'=>$_POST['phone'],':subjek'=>$_POST['subjek'],':isi'=>$_POST['isi'],':tanggal_kritik'=>$_POST['tanggal_kritik']));
+            if($result) {
+                // Redirect to homepage to display updated user in list
+                echo '<script type="text/javascript">'; 
+                echo 'alert("Terima Kasih Telah Memberikan Masukan");'; 
+                echo 'window.location.href = "kontak.php";';
+                echo '</script>';
+            }            
           }
           ?>
 					

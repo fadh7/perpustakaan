@@ -3,10 +3,11 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$query = "SELECT m_buku.id, m_buku.foto, m_buku.judul_buku, m_buku.sinopsis, m_kategori.nama_kategori, m_buku.pengarang, m_buku.jumlah_buku,
+$stmt_buku = $pdo_conn->prepare("SELECT m_buku.id, m_buku.foto, m_buku.judul_buku, m_buku.sinopsis, m_kategori.nama_kategori, m_buku.pengarang, m_buku.jumlah_buku,
 m_buku.nama_penerbit, m_buku.isbn, m_buku.lokasi, m_buku.tahun, m_buku.tanggal_masuk, m_buku.sumber, m_buku.harga
-FROM m_buku INNER JOIN m_kategori ON m_buku.m_kategori_id = m_kategori.id";
-$result = mysqli_query($mysqli, $query);
+FROM m_buku INNER JOIN m_kategori ON m_buku.m_kategori_id = m_kategori.id");
+$stmt_buku->execute();
+$result_buku = $stmt_buku->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +47,7 @@ $result = mysqli_query($mysqli, $query);
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -57,7 +58,7 @@ $result = mysqli_query($mysqli, $query);
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -177,8 +178,8 @@ $result = mysqli_query($mysqli, $query);
                                     <tbody>
                                       <?php
                                       $no = 1;
-                                        while($user_data = mysqli_fetch_array($result)){
-
+                                        // while($user_data = mysqli_fetch_array($result)){
+                                          foreach($result_buku as $user_data) {
                                           echo "<tr>";
                                           echo "<td>".$no++."</td>";
                                           echo "<td>".$user_data['foto']."</td>";
@@ -232,10 +233,12 @@ $result = mysqli_query($mysqli, $query);
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Kategori</label>
               <select class="form-control" id="exampleFormControlSelect1" name="m_kategori_id" required>
-                <?php 
-                $result = mysqli_query($mysqli, "SELECT * FROM m_kategori");
+                <?php
+                $stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori");
+                $stmt_kategori->execute();
+                $result_kategori = $stmt_kategori->fetchAll();
                 echo "<option value=''></option>";
-                while($user_data = mysqli_fetch_array($result)){
+                  foreach($result_kategori as $user_data) {
                   echo "<option value='$user_data[id]'>$user_data[nama_kategori]</option>";
                 }
                   ?>
@@ -307,12 +310,15 @@ $result = mysqli_query($mysqli, $query);
           $sumber = $_POST['sumber'];
           $harga = $_POST['harga'];
           $foto = $_POST['foto'];
-          //include database connection file
-          include('config.php');
-
-          //insert user data into table
-          $result = mysqli_query($mysqli, 'INSERT INTO m_buku(judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga, foto) 
-          VALUES ("'.$judul_buku.'","'.$sinopsis.'","'.$m_kategori_id.'","'.$pengarang.'","'.$jumlah_buku.'","'.$nama_penerbit.'","'.$isbn.'","'.$lokasi.'","'.$tahun.'","'.$tanggal_masuk.'","'.$sumber.'","'.$harga.'","'.$foto.'")');
+          
+          //insert buku data into table
+          $sql = "INSERT INTO m_buku (judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga, foto)
+          VALUES (:judul_buku, :sinopsis, :m_kategori_id, :pengarang, :jumlah_buku, :nama_penerbit, :isbn, :lokasi, :tahun, :tanggal_masuk, :sumber, :harga, :foto)";
+          $stmt = $pdo_conn->prepare($sql);
+          $result = $stmt->execute(array
+          (':judul_buku'=>$_POST['judul_buku'],':sinopsis'=>$_POST['sinopsis'],':m_kategori_id'=>$_POST['m_kategori_id'],':pengarang'=>$_POST['pengarang'],':jumlah_buku'=>$_POST['jumlah_buku'],
+           ':nama_penerbit'=>$_POST['nama_penerbit'],':isbn'=>$_POST['isbn'],':lokasi'=>$_POST['lokasi'],':tahun'=>$_POST['tahun'],':tanggal_masuk'=>$_POST['tanggal_masuk'],':sumber'=>$_POST['sumber'],
+           ':harga'=>$_POST['harga'],':foto'=>$_POST['foto']));
 
           var_dump($result);
 

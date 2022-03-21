@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_kategori ORDER BY id DESC");
+$stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_kategori->execute();
+$result_kategori = $stmt_kategori->fetchAll();
 ?>
 <?php
 // include database connection file
@@ -11,31 +13,33 @@ include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
-    
-    $nama_kategori=$_POST['nama_kategori'];
-    $foto=$_POST['foto'];
-        
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_kategori SET nama_kategori='$nama_kategori' , foto='$foto' WHERE id=$id");
-    
-    // Redirect to homepage to display updated user in list
-    header("Location: kategoribuku.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM m_kategori WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
 {
-    $nama_kategori = $user_data['nama_kategori'];
-    $foto = $user_data['foto'];
+    $kategori = $_FILES['foto']['name'];
+    $file_tmp = $_FILES['foto']['tmp_name'];
+    $folder = '../Front-end/images/category';
+
+    $cek = move_uploaded_file($file_tmp, $folder.$kategori);
+    if($cek){
+    // update user data
+    $stmt=$pdo_conn->prepare("UPDATE m_kategori SET nama_kategori=:nama_kategori,foto=:foto WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':nama_kategori', $_POST['nama_kategori']);
+    $stmt->bindParam(':foto', $kategori);
+    $kategori = $stmt->execute();
+    if($kategori) {
+        // Redirect to homepage to display updated user in list
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Kategori Berhasil Diupdate !");'; 
+        echo 'window.location.href = "kategoribuku.php";';
+        echo '</script>';
+    }
+    else{
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Upload File Gagal!");'; 
+        echo 'window.location.href = "editkategori.php";';
+        echo '</script>';
+    }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -76,7 +80,7 @@ while($user_data = mysqli_fetch_array($result))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -87,7 +91,7 @@ while($user_data = mysqli_fetch_array($result))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -182,14 +186,14 @@ while($user_data = mysqli_fetch_array($result))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
+                        <form action="" method="POST" name="form1" enctype="multipart/form-data">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Nama Kategori</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_kategori" value="<?php echo $nama_kategori;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_kategori" value="<?php echo $result_kategori[0]['nama_kategori']?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Cover</label><br>
-                                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+                                <input type='file' accept="image/*" id='exampleFormControlInput1' required="" name="foto" value="<?php echo $result_kategori[0]['foto'];?>"><br>
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>

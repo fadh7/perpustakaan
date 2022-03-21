@@ -1,7 +1,10 @@
 <?php
 // include database connection file
 include_once("../admin/config.php");
-$result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
+// $result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
+$stmt_tentang = $pdo_conn->prepare("SELECT * FROM l_tentang ");
+$stmt_tentang->execute();
+$result_tentang = $stmt_tentang->fetchAll();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -129,7 +132,7 @@ End Fixed Navigation
 			<div class="col-md-6 mt-20">
 				<h2>Sejarah Perpustakaan<br></h2>
         <?php
-        while($user_data = mysqli_fetch_array($result)){
+        foreach($result_tentang as $user_data){
 				echo "<p>".$user_data['sejarah']."</p>";
         
         ?>

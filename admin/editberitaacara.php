@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_berita ORDER BY id DESC");
+$stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_berita->execute();
+$result_berita = $stmt_berita->fetchAll();
 ?>
 <?php
 // include database connection file
@@ -12,34 +14,18 @@ include_once("config.php");
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
 {    
-    $id = $_POST['id'];
-    
-    $judul=$_POST['judul'];
-    $keterangan=$_POST['keterangan'];
-    $isi=$_POST['isi'];
-    $foto=$_POST['foto'];
         
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE l_berita SET judul='$judul',keterangan='$keterangan',isi='$isi',foto='$foto' WHERE id=$id");
+    // update berita
+    $stmt=$pdo_conn->prepare("UPDATE l_berita SET judul=:judul,keterangan=:keterangan,isi=:isi,foto=:foto WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':judul', $_POST['judul']);
+    $stmt->bindParam(':keterangan', $_POST['keterangan']);
+    $stmt->bindParam(':isi', $_POST['isi']);
+    $stmt->bindParam(':foto', $_POST['foto']);
+    $berita = $stmt->execute();
     
     // Redirect to homepage to display updated user in list
     header("Location: beritaacara.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM l_berita WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $judul = $user_data['judul'];
-    $keterangan = $user_data['keterangan'];
-    $isi = $user_data['isi'];
-    $foto = $user_data['foto'];
 }
 ?>
 <!DOCTYPE html>
@@ -189,19 +175,19 @@ while($user_data = mysqli_fetch_array($result))
                         <form action="" method="POST" name="form1">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Judul</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" value="<?php echo $judul;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" value="<?php echo $result_berita[0]['judul'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Keterangan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" value="<?php echo $keterangan;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" value="<?php echo $result_berita[0]['keterangan'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Isi</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="isi" value="<?php echo $isi;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="isi" value="<?php echo $result_berita[0]['isi'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Gambar</label><br>
-                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value="<?php echo $foto;?>"><br>
+                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value=""><br>
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>

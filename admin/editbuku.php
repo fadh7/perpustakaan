@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM m_buku ORDER BY id DESC");
+$stmt_buku = $pdo_conn->prepare("SELECT * FROM m_buku WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_buku->execute();
+$result_buku = $stmt_buku->fetchAll();
 ?>
 <?php
 // include database connection file
@@ -12,56 +14,47 @@ include_once("config.php");
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
 {    
-    $id = $_POST['id'];
-    
-    $judul_buku=$_POST['judul_buku'];
-    $sinopsis=$_POST['sinopsis'];
-    $m_kategori_id=$_POST['m_kategori_id'];
-    $pengarang=$_POST['pengarang'];
-    $jumlah_buku=$_POST['jumlah_buku'];
-    $nama_penerbit=$_POST['nama_penerbit'];
-    $isbn=$_POST['isbn'];    
-    $lokasi=$_POST['lokasi'];
-    $tahun=$_POST['tahun'];
-    $tanggal_masuk=$_POST['tanggal_masuk'];
-    $sumber=$_POST['sumber'];
-    $harga=$_POST['harga'];
-    $foto=$_POST['foto'];
+    $buku = $_FILES['foto']['name'];
+    $file_tmp = $_FILES['foto']['tmp_name'];
+    $folder = '../Front-end/images/browse-book';
+    $m_kategori_id = $_POST['m_kategori_id'];
+    $cek = move_uploaded_file($file_tmp, $folder.$buku);
 
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE m_buku SET judul_buku='$judul_buku', sinopsis='$sinopsis', m_kategori_id='$m_kategori_id',pengarang='$pengarang', 
-    jumlah_buku='$jumlah_buku',nama_penerbit='$nama_penerbit',isbn='$isbn',lokasi='$lokasi', tahun='$tahun', tanggal_masuk='$tanggal_masuk', sumber='$sumber', 
-    harga='$harga',foto='$foto' WHERE id=$id");
+    if($cek){
+    // update buku
+    $stmt=$pdo_conn->prepare("UPDATE m_buku SET judul_buku=:judul_buku,sinopsis=:sinopsis,m_kategori_id=:m_kategori_id,pengarang=:pengarang,jumlah_buku=:jumlah_buku,
+    nama_penerbit=:nama_penerbit,isbn=:isbn,lokasi=:lokasi,tahun=:tahun,tanggal_masuk=:tanggal_masuk,sumber=:sumber,harga=:harga,foto=:foto WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':judul_buku', $_POST['judul_buku']);
+    $stmt->bindParam(':sinopsis', $_POST['sinopsis']);
+    $stmt->bindParam(':m_kategori_id', $_POST['m_kategori_id']);
+    $stmt->bindParam(':pengarang', $_POST['pengarang']);
+    $stmt->bindParam(':jumlah_buku', $_POST['jumlah_buku']);
+    $stmt->bindParam(':nama_penerbit', $_POST['nama_penerbit']);
+    $stmt->bindParam(':isbn', $_POST['isbn']);
+    $stmt->bindParam(':lokasi', $_POST['lokasi']);
+    $stmt->bindParam(':tahun', $_POST['tahun']);
+    $stmt->bindParam(':tanggal_masuk', $_POST['tanggal_masuk']);
+    $stmt->bindParam(':sumber', $_POST['sumber']);
+    $stmt->bindParam(':harga', $_POST['harga']);
+    $stmt->bindParam(':foto', $buku);
+    $buku = $stmt->execute();
+    if($buku) {
+        // Redirect to homepage to display updated user in list
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Buku Berhasil Diupdate !");'; 
+        echo 'window.location.href = "databuku.php";';
+        echo '</script>';
+    }
+    else{
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Upload File Gagal!");'; 
+        echo 'window.location.href = "editbuku.php";';
+        echo '</script>';
+    }
+        }
     
-    // Redirect to homepage to display updated user in list
-    header("Location: databuku.php");
 }
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM m_buku WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $judul_buku = $user_data['judul_buku'];
-    $sinopsis = $user_data['sinopsis'];
-    $m_kategori_id = $user_data['m_kategori_id'];
-    $pengarang = $user_data['pengarang'];
-    $jumlah_buku = $user_data['jumlah_buku'];
-    $nama_penerbit = $user_data['nama_penerbit'];
-    $isbn = $user_data['isbn'];
-    $lokasi = $user_data['lokasi'];
-    $tahun = $user_data['tahun'];
-    $tanggal_masuk = $user_data['tanggal_masuk'];
-    $sumber = $user_data['sumber'];
-    $harga = $user_data['harga'];
-    $foto = $user_data['foto'];
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,23 +200,25 @@ while($user_data = mysqli_fetch_array($result))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
+                        <form action="" method="POST" name="form1" enctype="multipart/form-data">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Judul Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" value="<?php echo $judul_buku;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" value="<?php echo $result_buku[0]['judul_buku'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Sinposis</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" value="<?php echo $sinopsis;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" value="<?php echo $result_buku[0]['sinopsis'];?>">
                                 </div> 
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Kategori</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="m_kategori_id" required="" value="<?php echo $m_kategori_id;?>">
+                                <select class="form-control" id="exampleFormControlSelect1" name="m_kategori_id" required="" value="<?php echo $result_buku[0]['m_kategori_id'];?>">
                                 <?php 
-                                    $result = mysqli_query($mysqli, "SELECT * FROM m_kategori");
-                                    while($user_data = mysqli_fetch_array($result)){
+                                    $stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori");
+                                    $stmt_kategori->execute();
+                                    $result_kategori = $stmt_kategori->fetchAll();
+                                    foreach($result_kategori as $user_data){
                                         
-                                        if($user_data['id'] == $m_kategori_id )
+                                        if($user_data['id'] == $result_buku[0]['m_kategori_id'] )
                                         {
                                             echo "<option value='$user_data[id]' selected>$user_data[nama_kategori]</option>";
                                         }else 
@@ -236,46 +231,46 @@ while($user_data = mysqli_fetch_array($result))
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Pengarang</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" value="<?php echo $pengarang;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" value="<?php echo $result_buku[0]['pengarang'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Jumlah Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" value="<?php echo $jumlah_buku;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" value="<?php echo $result_buku[0]['jumlah_buku'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Nama Penerbit</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" value="<?php echo $nama_penerbit;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" value="<?php echo $result_buku[0]['nama_penerbit'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>ISBN</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" value="<?php echo $isbn;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" value="<?php echo $result_buku[0]['isbn'];;?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Lokasi</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" value="<?php echo $lokasi;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" value="<?php echo $result_buku[0]['lokasi'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Tahun</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" value="<?php echo $tahun;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" value="<?php echo $result_buku[0]['tahun'];;?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Tanggal Masuk</label>
-                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" value="<?php echo $tanggal_masuk;?>">
+                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" value="<?php echo $result_buku[0]['tanggal_masuk'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Sumber</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="sumber" value="<?php echo $sumber;?>">
+                                <select class="form-control" id="exampleFormControlSelect1" name="sumber" value="<?php echo $result_buku[0]['sumber'];?>">
                                     <option value="Hibah">Hibah</option>
                                     <option value="Pembelian">Pembelian</option>
                                     </select>
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Harga</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" value="<?php echo $harga;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" value="<?php echo $result_buku[0]['harga'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Cover</label><br>
-                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="foto" value="<?php echo $foto;?>"><br>
+                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="foto" value="<?php echo $result_buku[0]['foto'];?>"><br>
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value="<?php echo $_GET['id'];?>">

@@ -20,14 +20,22 @@ if (! isset($_COOKIE['VISITOR'])) {
   setcookie('VISITOR',$browser,$duration);
 
   // current time
+  date_default_timezone_set("Asia/Makassar");
   $tanggal = date('Y-m-d H:i:s');
   
   // SQL Command atau perintah SQL INSERT
-  $result = mysqli_query($mysqli, 'INSERT INTO l_statistik(ip, os, browser, tanggal) VALUES ("'.$ip.'","'.$os.'","'.$browser.'","'.$tanggal.'")');
+  // $result = mysqli_query($mysqli, 'INSERT INTO l_statistik(ip, os, browser, tanggal) VALUES ("'.$ip.'","'.$os.'","'.$browser.'","'.$tanggal.'")');
 
   // variabel { $db } adalah perwakilan dari koneksi database lihat config.php
-  $query = $mysqli->query($result);
-}
+  // $query = $mysqli->query($result);
+ 
+		$query = "INSERT INTO l_statistik (ip, os, browser, tanggal) VALUES ('".$ip."','".$os."','".$browser."','".$tanggal."')";
+ 
+		$stmt = $pdo_conn->prepare($query);
+ 
+		$stmt->execute();
+
+  }
 ?>
 
 <!DOCTYPE html>
@@ -169,11 +177,6 @@ End Fixed Navigation
 <!--
 		Start Blog Section
 		=========================================== -->
-    <?php
-    // include database connection file
-    include_once("admin/config.php");
-    $result = mysqli_query($mysqli, "SELECT * FROM l_berita");
-    ?>
 
 <section class="blog" id="blog">
 	<div class="container">

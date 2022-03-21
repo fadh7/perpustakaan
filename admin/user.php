@@ -3,10 +3,10 @@
 include_once("config.php");
 
 // Fetch all users data from database
-// $result = mysqli_query($mysqli, "SELECT * FROM m_user ORDER BY id DESC");
-$query = "SELECT m_user.id, m_user.username, m_user.password, m_user.nama_depan, m_user.nama_belakang, m_role.nama_role
-FROM m_user INNER JOIN m_role ON m_user.m_role_id = m_role.id";
-$result = mysqli_query($mysqli, $query);
+$stmt_user = $pdo_conn->prepare("SELECT m_user.id, m_user.username, m_user.password, m_user.nama_depan, m_user.nama_belakang, m_role.nama_role
+FROM m_user INNER JOIN m_role ON m_user.m_role_id = m_role.id");
+$stmt_user->execute();
+$result_user = $stmt_user->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -169,7 +169,7 @@ $result = mysqli_query($mysqli, $query);
                                       <tbody>
                                         <?php
                                         $no = 1;
-                                          while($user_data = mysqli_fetch_array($result)){
+                                        foreach($result_user as $user_data){
 
                                             echo "<tr>";
                                             echo "<td>".$no++."</td>";
@@ -223,13 +223,12 @@ $result = mysqli_query($mysqli, $query);
               <div class="form-group">
                 <label for="exampleFormControlSelect1">role</label>
                 <select class="form-control" id="exampleFormControlSelect1" name="m_role_id" required>
-                    <!-- <option value="">--Pilih--</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option> -->
-                  <?php 
-                $result = mysqli_query($mysqli, "SELECT * FROM m_role");
+                  <?php
+                $stmt_user = $pdo_conn->prepare("SELECT * FROM m_role");
+                $stmt_user->execute();
+                $result_user = $stmt_user->fetchAll();
                 echo "<option value=''></option>";
-                while($user_data = mysqli_fetch_array($result)){
+                foreach($result_user as $user_data){
                   echo "<option value='$user_data[id]'>$user_data[id]</option>";
                 }
                   ?>
@@ -250,12 +249,24 @@ $result = mysqli_query($mysqli, $query);
             $nama_belakang = $_POST['nama_belakang'];
             $m_role_id = $_POST['m_role_id'];
 
-            //include database connection file
-            include('config.php');
-
             //insert user data into table
-            $result = mysqli_query($mysqli, 'INSERT INTO m_user(username, password, nama_depan, nama_belakang, m_role_id) VALUES ("'.$username.'","'.$password.'","'.$nama_depan.'","'.$nama_belakang.'","'.$m_role_id.'")');
-            echo "<script>window.location.href='user.php';</script>";
+            $sql = "INSERT INTO m_user (username, password, nama_depan, nama_belakang, m_role_id) VALUES (:username, :password, :nama_depan, :nama_belakang, :m_role_id)";
+            $stmt = $pdo_conn->prepare($sql);
+            $result = $stmt->execute(array
+            (':username'=>$_POST['username'],':password'=>$_POST['password'],':nama_depan'=>$_POST['nama_depan'],':nama_belakang'=>$_POST['nama_belakang'],':m_role_id'=>$_POST['m_role_id']));
+            if($result) {
+                // Redirect to homepage to display updated user in list
+                echo '<script type="text/javascript">'; 
+                echo 'alert("User Berhasil Ditambahkan !");'; 
+                echo 'window.location.href = "user.php";';
+                echo '</script>';
+            }
+            else{
+                echo '<script type="text/javascript">'; 
+                echo 'alert("User Gagal Ditambahkan!");'; 
+                echo 'window.location.href = "user.php";';
+                echo '</script>';
+            }
           }
           ?>
         </div>

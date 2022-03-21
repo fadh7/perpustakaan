@@ -3,7 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$result = mysqli_query($mysqli, "SELECT * FROM l_tentang ORDER BY id DESC");
+$stmt_tentang = $pdo_conn->prepare("SELECT * FROM l_tentang WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_tentang->execute();
+$result_tentang = $stmt_tentang->fetchAll();
 ?>
 <?php
 // include database connection file
@@ -11,33 +13,17 @@ include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
-    
-    $sejarah=$_POST['sejarah'];
-    $visi=$_POST['visi'];
-    $misi=$_POST['misi'];
-        
-    // update user data
-    $result = mysqli_query($mysqli, "UPDATE l_tentang SET sejarah='$sejarah',visi='$visi',misi='$misi' WHERE id=$id");
+{       
+    // update tentang
+    $stmt=$pdo_conn->prepare("UPDATE l_tentang SET sejarah=:sejarah,visi=:visi,misi=:misi WHERE id=:id");
+    $stmt->bindParam(':id', $_POST['id']);
+    $stmt->bindParam(':sejarah', $_POST['sejarah']);
+    $stmt->bindParam(':visi', $_POST['visi']);
+    $stmt->bindParam(':misi', $_POST['misi']);
+    $tentang = $stmt->execute();
     
     // Redirect to homepage to display updated user in list
     header("Location: tentang.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id = $_GET['id'];
- 
-// Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM l_tentang WHERE id=$id");
- 
-while($user_data = mysqli_fetch_array($result))
-{
-    $sejarah = $user_data['sejarah'];
-    $visi = $user_data['visi'];
-    $misi = $user_data['misi'];
 }
 ?>
 <!DOCTYPE html>
@@ -78,7 +64,7 @@ while($user_data = mysqli_fetch_array($result))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -89,7 +75,7 @@ while($user_data = mysqli_fetch_array($result))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -187,15 +173,15 @@ while($user_data = mysqli_fetch_array($result))
                         <form action="" method="POST" name="form1">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Sejarah</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sejarah" value="<?php echo $sejarah;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sejarah" value="<?php echo $result_tentang[0]['sejarah'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Visi</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="visi" value="<?php echo $visi;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="visi" value="<?php echo $result_tentang[0]['visi'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Misi</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="misi" value="<?php echo $misi;?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="misi" value="<?php echo $result_tentang[0]['misi'];?>">
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>
