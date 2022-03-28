@@ -4,7 +4,7 @@ include_once("config.php");
 
 // Fetch all users data from database
 $stmt_user = $pdo_conn->prepare("SELECT m_user.id, m_user.username, m_user.password, m_user.nama_depan, m_user.nama_belakang, m_role.nama_role
-FROM m_user INNER JOIN m_role ON m_user.m_role_id = m_role.id");
+FROM m_user INNER JOIN m_role ON m_user.m_role_id = m_role.id ORDER BY id ASC");
 $stmt_user->execute();
 $result_user = $stmt_user->fetchAll();
 ?>
@@ -106,6 +106,7 @@ $result_user = $stmt_user->fetchAll();
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -206,19 +207,19 @@ $result_user = $stmt_user->fetchAll();
           <form action="" method="POST" name="form1">
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Username</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="username" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="username" autocomplete="off" required>
             </div>
             <div class='form-group'>
                 <label for='exampleFormControlInput1'>Password</label>
-                <input type='password' class='form-control' id='exampleFormControlInput1' name="password" required>
+                <input type='password' class='form-control' id='exampleFormControlInput1' name="password" autocomplete="off" required>
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Nama Depan</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" required>
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" autocomplete="off" required>
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Nama Belakang</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" required>
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" autocomplete="off" required>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlSelect1">role</label>

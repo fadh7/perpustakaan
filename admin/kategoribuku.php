@@ -3,7 +3,7 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori");
+$stmt_kategori = $pdo_conn->prepare("SELECT * FROM m_kategori ORDER BY id ASC");
 $stmt_kategori->execute();
 $result_kategori = $stmt_kategori->fetchAll();
 ?>
@@ -106,6 +106,7 @@ $result_kategori = $stmt_kategori->fetchAll();
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -206,7 +207,7 @@ $result_kategori = $stmt_kategori->fetchAll();
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Cover</label><br>
-              <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+              <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto" required=""><br>
             </div>
               <div class='form-footer'>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

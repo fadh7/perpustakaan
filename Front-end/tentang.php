@@ -1,7 +1,6 @@
 <?php
 // include database connection file
 include_once("../admin/config.php");
-// $result = mysqli_query($mysqli, "SELECT * FROM l_tentang");
 $stmt_tentang = $pdo_conn->prepare("SELECT * FROM l_tentang ");
 $stmt_tentang->execute();
 $result_tentang = $stmt_tentang->fetchAll();
@@ -216,13 +215,6 @@ End Fixed Navigation
     
               <!-- member name & designation -->
               <div class="member-content">
-                <?php
-                // $result = mysqli_query($mysqli, "SELECT * FROM struktur");
-                // while($user_data = mysqli_fetch_array($result)){
-                // echo"<h3>".$user_data['nama']."</h3>";
-                // echo"<span>".$user_data['jabatan']."</span>";
-                // }
-                ?>
                 <h3><?php echo $row["nama"]; ?></h3>
                 <span><?php echo $row["jabatan"];?></span>
                 
@@ -254,8 +246,10 @@ End Fixed Navigation
 			</div>
 			<!-- /section title -->
 			<div class="col-md-8 mx-auto">
-				<iframe src="https://www.youtube.com/watch?v=_tmI61V55r0" width="100%" height="360" frameborder="0"
-					webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+				<!-- <iframe src="https://www.youtube.com/watch?v=_tmI61V55r0" width="100%" height="360" frameborder="0"
+					webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+          <iframe width="100%" height="360" src="https://www.youtube.com/embed/_tmI61V55r0" title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>
 		</div>
 	</div>
@@ -277,8 +271,11 @@ Start Call To Action
 	</div>   	<!-- End container -->
 </section>   <!-- End section -->
 
-
-
+<?php
+$stmt_galeri = $pdo_conn->prepare("SELECT * FROM t_galeri ORDER BY tanggal ");
+$stmt_galeri->execute();
+$result_galeri = $stmt_galeri->fetchAll();
+?>
 <section class="section grallery">
 	<div class="container-fluid">
 		<div class="row">
@@ -290,10 +287,14 @@ Start Call To Action
 			</div>
 		</div>
 		<div class="row">
+    
 			<div class="col-md-12">
 				<div class="company-gallery">
-					<img src="images/company/gallery-1.jpg" alt="">
-					<img src="images/company/gallery-2.jpg" alt="">
+        <?php
+        		foreach($result_galeri as $row) {
+        ?>
+					<?php echo "<img src='images/galery/$row[foto]' width ='20px' height='20px'alt=''>"?>
+					<!-- <img src="images/company/gallery-2.jpg" alt="">
 					<img src="images/company/gallery-3.jpg" alt="">
 					<img src="images/company/gallery-4.jpg" alt="">
 					<img src="images/company/gallery-5.jpg" alt="">
@@ -303,7 +304,10 @@ Start Call To Action
 					<img src="images/company/gallery-3.jpg" alt="">
 					<img src="images/company/gallery-4.jpg" alt="">
 					<img src="images/company/gallery-5.jpg" alt="">
-					<img src="images/company/gallery-5.jpg" alt="">
+					<img src="images/company/gallery-5.jpg" alt=""> -->
+          <?php
+            }
+          ?>
 				</div>
 			</div>
 		</div>

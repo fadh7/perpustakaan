@@ -144,11 +144,11 @@ End Fixed Navigation
           <!-- Post Content -->
           <div class="post-content">
             <?php echo "<h3>$row[judul]</h3>";?>
-             <!-- <ul class="list-inline">
+             <ul class="list-inline">
                <li class="list-inline-item">
-                 <a href="#">Admin</a>&nbsp;/
+                 <?php echo "<a href=''>$row[tanggal]</a>"?>
                </li>
-               <li class="list-inline-item">
+               <!-- <li class="list-inline-item">
                  <a href="#">30 comments</a>&nbsp;/
                </li>
                <li class="list-inline-item">
@@ -174,32 +174,6 @@ End Fixed Navigation
                 <div class="widget-post-image">
                   <a href="single-post.html">
                     <img src="images/blog/post-1.jpg" alt="post-img">
-                  </a>
-                </div>
-                <div class="widget-post-content">
-                  <a href="single-post.html">
-                    <h5>Condentum Quam Vitae Ligu. tempor bibendum.</h5>
-                  </a>
-                  <h6>Aug 20, 2018</h6>
-                </div>
-              </li>
-              <li class="widget-post-list-item">
-                <div class="widget-post-image">
-                  <a href="single-post.html">
-                    <img src="images/blog/post-2.jpg" alt="post-img">
-                  </a>
-                </div>
-                <div class="widget-post-content">
-                  <a href="single-post.html">
-                    <h5>Condentum Quam Vitae Ligu. tempor bibendum.</h5>
-                  </a>
-                  <h6>Aug 20, 2018</h6>
-                </div>
-              </li>
-              <li class="widget-post-list-item">
-                <div class="widget-post-image">
-                  <a href="single-post.html">
-                    <img src="images/blog/post-3.jpg" alt="post-img">
                   </a>
                 </div>
                 <div class="widget-post-content">

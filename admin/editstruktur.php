@@ -171,11 +171,11 @@ if(isset($_POST['update']))
                         <form action="" method="POST" name="form1">
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama" value="<?php echo $result_struktur[0]['nama'];?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama" autocomplete="off" value="<?php echo $result_struktur[0]['nama'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Jabatan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan" value="<?php echo $result_struktur[0]['jabatan'];?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan" autocomplete="off" value="<?php echo $result_struktur[0]['jabatan'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Gambar</label><br>

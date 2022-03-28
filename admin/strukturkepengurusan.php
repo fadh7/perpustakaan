@@ -107,6 +107,7 @@ $result_struktur = $stmt_struktur->fetchAll();
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -181,7 +182,7 @@ $result_struktur = $stmt_struktur->fetchAll();
                                             <a href='editstruktur.php?id=$user_data[id]'><button class='btn btn-primary' title='Edit'>
                                             <i class ='fa fa-pen'></i></button></a>
                                             <a href='hapusstruktur.php?id=$user_data[id]' class ='confirmation'><button class='btn btn-danger' title='Hapus'>
-                                            <i class ='fa fa-trash'></i></button></a>
+                                            mys</i></button></a>
                                             </td>
                                             </tr>";
                                           }
@@ -205,11 +206,11 @@ $result_struktur = $stmt_struktur->fetchAll();
           <form action="" method="POST" name="form1">
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Nama</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama">
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama" autocomplete="off" required>
             </div>
             <div class='form-group'>
                 <label for='exampleFormControlInput1'>Jabatan</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan">
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="jabatan" autocomplete="off" required>
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Gambar </label><br>

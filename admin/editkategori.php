@@ -141,6 +141,7 @@ if(isset($_POST['update']))
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>

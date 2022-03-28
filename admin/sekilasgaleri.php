@@ -3,32 +3,11 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita WHERE id=" ."'" . $_GET['id'] . "'");
-$stmt_berita->execute();
-$result_berita = $stmt_berita->fetchAll();
+$stmt_galeri = $pdo_conn->prepare("SELECT * FROM t_galeri ORDER BY id ASC");
+$stmt_galeri->execute();
+$result_galeri = $stmt_galeri->fetchAll();
 ?>
-<?php
-// include database connection file
-include_once("config.php");
- 
-// Check if form is submitted for user update, then redirect to homepage after update
-if(isset($_POST['update']))
-{    
-        
-    // update berita
-    $stmt=$pdo_conn->prepare("UPDATE l_berita SET judul=:judul,keterangan=:keterangan,isi=:isi,foto=:foto, tanggal=:tanggal WHERE id=:id");
-    $stmt->bindParam(':id', $_POST['id']);
-    $stmt->bindParam(':judul', $_POST['judul']);
-    $stmt->bindParam(':keterangan', $_POST['keterangan']);
-    $stmt->bindParam(':isi', $_POST['isi']);
-    $stmt->bindParam(':foto', $_POST['foto']);
-    $stmt->bindParam(':tanggal', $_POST['tanggal']);
-    $berita = $stmt->execute();
-    
-    // Redirect to homepage to display updated user in list
-    header("Location: beritaacara.php");
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,17 +25,13 @@ if(isset($_POST['update']))
      <link rel="icon" type="image/png" sizes="16x16" href="./img/logobaru.png">
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="datepicker/js/bootstrap-datepicker.js"></script>
 
 </head>
 
@@ -69,7 +44,7 @@ if(isset($_POST['update']))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -80,7 +55,7 @@ if(isset($_POST['update']))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -130,6 +105,7 @@ if(isset($_POST['update']))
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="statistikpengunjung.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -154,7 +130,7 @@ if(isset($_POST['update']))
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h3 class="h3 mb-0 text-gray-800">Berita Acara</h3>
+                    <h3 class="h3 mb-0 text-gray-800">Data Galeri</h3>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                             <!-- Dropdown - User Information -->
@@ -175,34 +151,105 @@ if(isset($_POST['update']))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Judul</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" autocomplete="off" value="<?php echo $result_berita[0]['judul'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Keterangan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" autocomplete="off" value="<?php echo $result_berita[0]['keterangan'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Isi</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="isi" autocomplete="off" value="<?php echo $result_berita[0]['isi'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Tanggal</label>
-                                    <input type='text' class='form-control datepicker' id='exampleFormControlInput1' name="tanggal" autocomplete="off" value="<?php echo $result_berita[0]['tanggal'];?> ">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Gambar</label><br>
-                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value="" required><br>
-                                </div>
-                                <div class='form-footer'>
-                                <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>
-                                <a href="beritaacara.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
-                                <button type="submit" name="update" value="Edit" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </form>   
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+                                    <i class="fa fa-plus"></i>&nbsp; Tambah Galeri
+                                </button> <br><br>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                        <tr>
+                                          <th scope="col">No.</th>
+                                          <th scope="col">Foto</th>
+                                          <th scope="col">Deskripsi</th>
+                                          <th scope="col">Tanggal</th>
+                                          <th class="col-2">Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <?php
+                                        $no = 1;
+                                        foreach($result_galeri as $user_data){
+
+                                            echo "<tr>";
+                                            echo "<td>".$no++."</td>";
+                                            echo "<td>".$user_data['foto']."</td>";
+                                            echo "<td>".$user_data['deskripsi']."</td>";
+                                            echo "<td>".$user_data['tanggal']."</td>";
+                                            echo "<td>
+
+                                            <a href='editgaleri.php?id=$user_data[id]'><button class='btn btn-primary' title='Edit'>
+                                            <i class ='fa fa-pen'></i></button></a>
+                                            <a href='hapusgaleri.php?id=$user_data[id]' class ='confirmation'><button class='btn btn-danger' title='Hapus'>
+                                            <i class ='fa fa-trash'></i></button></a>
+                                            </td>
+                                            </tr>";
+                                          }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+  <!-- Add Modal-->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Galeri</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!--s-->
+          <form action="" method="POST" name="form1">
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Deskripsi Galeri</label>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="deskripsi" autocomplete="off" required>
+            </div>
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Tanggal Upload</label>
+              <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal" required>
+            </div>
+              <div class='form-group'>
+                <label for='exampleFormControlInput1'>Foto</label><br>
+                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+              </div>
+              <div class='form-footer'>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button type="submit" name="Submit" value="Add" class="btn btn-primary">Save changes</button>
+              </div>
+          </form>
+        </div>
+          <?php
+          if(isset($_POST['Submit'])){
+            //$id = $_POST['id'];
+            $foto = $_POST['foto'];
+            $deskripsi = $_POST['deskripsi'];
+            $tanggal = $_POST['tanggal'];
+
+            //insert user data into table
+            $sql = "INSERT INTO t_galeri (foto, deskripsi, tanggal) VALUES (:foto, :deskripsi, :tanggal)";
+            $stmt = $pdo_conn->prepare($sql);
+            $result = $stmt->execute(array
+            (':foto'=>$_POST['foto'],':deskripsi'=>$_POST['deskripsi'],':tanggal'=>$_POST['tanggal']));
+            if($result) {
+                // Redirect to homepage to display updated user in list
+                echo '<script type="text/javascript">'; 
+                echo 'alert("Galeri Berhasil Ditambahkan !");'; 
+                echo 'window.location.href = "sekilasgaleri.php";';
+                echo '</script>';
+            }
+            else{
+                echo '<script type="text/javascript">'; 
+                echo 'alert("Galeri Gagal Ditambahkan!");'; 
+                echo 'window.location.href = "sekilasgaleri.php";';
+                echo '</script>';
+            }
+          }
+          ?>
+        </div>
+  </div>
+  </div>
                     </div>
 
                 </div>
@@ -276,20 +323,6 @@ if(isset($_POST['update']))
       return confirm ('Yakin Ingin Menghapus?');
     })
     </script>
-    <!-- Menambahkan jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-    <!-- Menambahakan Date Range Picker -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-    <script type="text/javascript">
-
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd', 
-        startDate: new Date(),
-        autoclose: true,
-        todayHighlight:true,
-    });
     </script>
 
 </body>

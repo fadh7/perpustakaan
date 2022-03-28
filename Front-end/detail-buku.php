@@ -52,6 +52,9 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- Responsive CSS -->
   <link rel="stylesheet" href="css/responsive.css"> 
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax//libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 
 </head>
 
@@ -148,40 +151,29 @@ End Fixed Navigation
                          <div class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height">
                             <div class="iq-card-body p-0">
                                <div class="row align-items-center">
-                                  <!-- <div class="col-3">
+                                  <div class="col-3">
                                      <ul id="description-slider-nav" class="list-inline p-0 m-0  d-flex align-items-center">
-                                        <li>
+                                     <?php
+                                             foreach($result_buku as $row) {
+                                       ?>
+                                       <li>
                                            <a href="javascript:void(0);">
-                                           <img src="images/book-dec/01.jpg" class="img-fluid rounded w-100" alt="">
+                                           <?php echo "<img src='images/browse-books/$row[foto]' class='img-fluid rounded w-100' alt=''>"?>
                                            </a>
                                         </li>
                                         <li>
                                            <a href="javascript:void(0);">
-                                           <img src="images/book-dec/02.jpg" class="img-fluid rounded w-100" alt="">
+                                           <?php echo "<img src='images/browse-books/$row[cover_belakang]' class='img-fluid rounded w-100' alt=''>"?>
                                            </a>
                                         </li>
                                         <li>
                                            <a href="javascript:void(0);">
-                                           <img src="images/book-dec/03.jpg" class="img-fluid rounded w-100" alt="">
+                                           <?php echo "<img src='images/browse-books/$row[cover_lainnya]' class='img-fluid w-100 rounded' alt=''>";?>
                                            </a>
                                         </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/04.jpg" class="img-fluid rounded w-100" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/05.jpg" class="img-fluid rounded w-100" alt="">
-                                           </a>
-                                        </li>
-                                        <li>
-                                           <a href="javascript:void(0);">
-                                           <img src="images/book-dec/06.jpg" class="img-fluid rounded w-100" alt="">
-                                           </a>
-                                        </li>
+                                        <?php }?>
                                      </ul>
-                                  </div> -->
+                                  </div>
                                   <div class="col-9">
                                     <?php
                                        if(!empty($result_buku)) { 
@@ -204,7 +196,7 @@ End Fixed Navigation
                             <div class="iq-card-body p-0">
                                <?php echo "<h3 class='mb-3'>$row[judul_buku]</h3>";?>
                                
-                               <div class="mb-3 d-block">
+                               <!-- <div class="mb-3 d-block">
                                   <span class="font-size-20 text-warning">
                                   <i class="fa fa-star mr-1"></i>
                                   <i class="fa fa-star mr-1"></i>
@@ -212,12 +204,16 @@ End Fixed Navigation
                                   <i class="fa fa-star mr-1"></i>
                                   <i class="fa fa-star"></i>
                                   </span>
-                               </div>
+                               </div> -->
                                <?php echo "<span class='text-dark mb-4 pb-4 iq-border-bottom d-block'>$row[sinopsis]</span>";?>
                                <div class="text-primary mb-1">Pengarang : <?php echo "<span class='text-body'>$row[pengarang]</span>"?></div>
                                <div class="text-primary mb-1">Penerbit : <?php echo "<span class='text-body'>$row[nama_penerbit]</span>"?></div>
                                <div class="text-primary mb-1">ISBN : <?php echo "<span class='text-body'>$row[isbn]</span>"?></div>
                                <div class="text-primary mb-5">Tahun : <?php echo "<span class='text-body'>$row[tahun]</span>"?></div>
+                               
+                               <div class="mb-4 d-flex align-items-center">
+                                  <span class="fa fa-star"></span>
+                               </div>
                                <div class="mb-4 d-flex align-items-center">                                       
                                   <a href="#" class="btn btn-main view-more mr-2">Add To Cart</a>
                                   <a href="book-pdf.html" class="btn btn-main view-more mr-2">Baca Sampel</a>
@@ -270,7 +266,7 @@ End Fixed Navigation
                                    <div class="mb-2">
                                       <?php echo "<h6 class='mb-1'>$row[judul_buku]</h6>"?>
                                       <?php echo "<p class='font-size-13 line-height mb-1'>$row[pengarang]</p>"?>
-                                      <div class="d-block line-height">
+                                      <!-- <div class="d-block line-height">
                                          <span class="font-size-11 text-warning">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -278,7 +274,7 @@ End Fixed Navigation
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                          </span>                                             
-                                      </div>
+                                      </div> -->
                                    </div>
                                    
                                    <div class="iq-product-action">

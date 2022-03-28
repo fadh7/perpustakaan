@@ -3,9 +3,9 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$stmt_buku = $pdo_conn->prepare("SELECT m_buku.id, m_buku.foto, m_buku.judul_buku, m_buku.sinopsis, m_kategori.nama_kategori, m_buku.pengarang, m_buku.jumlah_buku,
+$stmt_buku = $pdo_conn->prepare("SELECT m_buku.id, m_buku.foto,m_buku.cover_belakang, m_buku.cover_lainnya, m_buku.judul_buku, m_buku.sinopsis, m_kategori.nama_kategori, m_buku.pengarang, m_buku.jumlah_buku,
 m_buku.nama_penerbit, m_buku.isbn, m_buku.lokasi, m_buku.tahun, m_buku.tanggal_masuk, m_buku.sumber, m_buku.harga
-FROM m_buku INNER JOIN m_kategori ON m_buku.m_kategori_id = m_kategori.id");
+FROM m_buku INNER JOIN m_kategori ON m_buku.m_kategori_id = m_kategori.id ORDER BY id ASC");
 $stmt_buku->execute();
 $result_buku = $stmt_buku->fetchAll();
 ?>
@@ -108,6 +108,7 @@ $result_buku = $stmt_buku->fetchAll();
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -159,7 +160,9 @@ $result_buku = $stmt_buku->fetchAll();
                                 <thead>
                                       <tr>
                                         <th scope="col">No.</th>
-                                        <th scope="col">Cover</th>
+                                        <th scope="col">Cover Depan</th>
+                                        <th scope="col">Cover Belakang</th>
+                                        <th scope="col">Cover Lainnya</th>
                                         <th scope="col">Judul Buku</th>
                                         <th scope="col">Sinopsis</th>
                                         <th scope="col">Kategori</th>
@@ -183,6 +186,8 @@ $result_buku = $stmt_buku->fetchAll();
                                           echo "<tr>";
                                           echo "<td>".$no++."</td>";
                                           echo "<td>".$user_data['foto']."</td>";
+                                          echo "<td>".$user_data['cover_belakang']."</td>";
+                                          echo "<td>".$user_data['cover_lainnya']."</td>";
                                           echo "<td>".$user_data['judul_buku']."</td>";
                                           echo "<td>".$user_data['sinopsis']."</td>";
                                           echo "<td>".$user_data['nama_kategori']."</td>";
@@ -224,11 +229,11 @@ $result_buku = $stmt_buku->fetchAll();
         <form action="" method="POST" name="form1">
           <div class='form-group'>
             <label for='exampleFormControlInput1'>Judul Buku</label>
-            <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" required>
+            <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" autocomplete="off" required>
           </div>
           <div class='form-group'>
-              <label for='exampleFormControlInput1'>Sinopsis</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" required>
+              <label for='exampleFormControlInput1'>Sinopsis</label>  
+              <textarea class='form-control' id='exampleFormControlInput1' name="sinopsis" rows="5" cols="40" autocomplete="off" required></textarea>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Kategori</label>
@@ -246,31 +251,31 @@ $result_buku = $stmt_buku->fetchAll();
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Pengarang</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Jumlah Buku</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' onkeypress="return event.charCode <=57" name="jumlah_buku" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Nama Penerbit</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>ISBN</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Lokasi</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Tahun</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' onkeypress="return event.charCode <=57" name="tahun" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Tanggal Masuk</label>
-              <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" required>
+              <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" autocomplete="off" required>
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Sumber</label>
@@ -282,11 +287,19 @@ $result_buku = $stmt_buku->fetchAll();
             </div>
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Harga</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" autocomplete="off" required>
             </div>
             <div class='form-group'>
-              <label for='exampleFormControlInput1'>Cover</label><br>
+              <label for='exampleFormControlInput1'>Cover Depan</label><br>
               <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+            </div>
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Cover Belakang</label><br>
+              <input type='file' accept="image/*"id='exampleFormControlInput1' name="cover_belakang"><br>
+            </div>
+            <div class='form-group'>
+              <label for='exampleFormControlInput1'>Cover Lainnya</label><br>
+              <input type='file' accept="image/*"id='exampleFormControlInput1' name="cover_lainnya"><br>
             </div>
             <div class='form-footer'>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -310,15 +323,17 @@ $result_buku = $stmt_buku->fetchAll();
           $sumber = $_POST['sumber'];
           $harga = $_POST['harga'];
           $foto = $_POST['foto'];
+          $cover_belakang = $_POST['cover_belakang'];
+          $cover_lainnya = $_POST['cover_lainnya'];
           
           //insert buku data into table
-          $sql = "INSERT INTO m_buku (judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga, foto)
-          VALUES (:judul_buku, :sinopsis, :m_kategori_id, :pengarang, :jumlah_buku, :nama_penerbit, :isbn, :lokasi, :tahun, :tanggal_masuk, :sumber, :harga, :foto)";
+          $sql = "INSERT INTO m_buku (judul_buku, sinopsis, m_kategori_id, pengarang, jumlah_buku, nama_penerbit, isbn, lokasi, tahun, tanggal_masuk, sumber, harga, foto, cover_belakang, cover_lainnya)
+          VALUES (:judul_buku, :sinopsis, :m_kategori_id, :pengarang, :jumlah_buku, :nama_penerbit, :isbn, :lokasi, :tahun, :tanggal_masuk, :sumber, :harga, :foto, :cover_belakang, :cover_lainnya)";
           $stmt = $pdo_conn->prepare($sql);
           $result = $stmt->execute(array
           (':judul_buku'=>$_POST['judul_buku'],':sinopsis'=>$_POST['sinopsis'],':m_kategori_id'=>$_POST['m_kategori_id'],':pengarang'=>$_POST['pengarang'],':jumlah_buku'=>$_POST['jumlah_buku'],
            ':nama_penerbit'=>$_POST['nama_penerbit'],':isbn'=>$_POST['isbn'],':lokasi'=>$_POST['lokasi'],':tahun'=>$_POST['tahun'],':tanggal_masuk'=>$_POST['tanggal_masuk'],':sumber'=>$_POST['sumber'],
-           ':harga'=>$_POST['harga'],':foto'=>$_POST['foto']));
+           ':harga'=>$_POST['harga'],':foto'=>$_POST['foto'],':cover_belakang'=>$_POST['cover_belakang'],':cover_lainnya'=>$_POST['cover_lainnya']));
 
           var_dump($result);
 

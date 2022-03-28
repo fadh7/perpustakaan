@@ -13,17 +13,27 @@ include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
 if(isset($_POST['update']))
-{    
-    $buku = $_FILES['foto']['name'];
-    $file_tmp = $_FILES['foto']['tmp_name'];
-    $folder = '../Front-end/images/browse-book';
+{   
     $m_kategori_id = $_POST['m_kategori_id'];
-    $cek = move_uploaded_file($file_tmp, $folder.$buku);
 
-    if($cek){
+    $buku = $_FILES['foto']['name'];
+    $file_tmp1 = $_FILES['foto']['tmp_name'];
+    $folder = '../Front-end/images/browse-book';
+    $cek1 = move_uploaded_file($file_tmp1, $folder.$buku);
+
+    $belakang = $_FILES['cover_belakang']['name'];
+    $file_tmp2 = $_FILES['foto']['tmp_name'];
+    $cek2 = move_uploaded_file($file_tmp2, $folder.$belakang);
+
+    $lainnya = $_FILES['cover_lainnya']['name'];
+    $file_tmp3 = $_FILES['foto']['tmp_name'];
+    $cek3 = move_uploaded_file($file_tmp3, $folder.$lainnya);
+
+    if($cek1){
     // update buku
     $stmt=$pdo_conn->prepare("UPDATE m_buku SET judul_buku=:judul_buku,sinopsis=:sinopsis,m_kategori_id=:m_kategori_id,pengarang=:pengarang,jumlah_buku=:jumlah_buku,
-    nama_penerbit=:nama_penerbit,isbn=:isbn,lokasi=:lokasi,tahun=:tahun,tanggal_masuk=:tanggal_masuk,sumber=:sumber,harga=:harga,foto=:foto WHERE id=:id");
+    nama_penerbit=:nama_penerbit,isbn=:isbn,lokasi=:lokasi,tahun=:tahun,tanggal_masuk=:tanggal_masuk,sumber=:sumber,harga=:harga,foto=:foto,cover_belakang=:cover_belakang,
+    cover_lainnya=:cover_lainnya WHERE id=:id");
     $stmt->bindParam(':id', $_POST['id']);
     $stmt->bindParam(':judul_buku', $_POST['judul_buku']);
     $stmt->bindParam(':sinopsis', $_POST['sinopsis']);
@@ -38,8 +48,10 @@ if(isset($_POST['update']))
     $stmt->bindParam(':sumber', $_POST['sumber']);
     $stmt->bindParam(':harga', $_POST['harga']);
     $stmt->bindParam(':foto', $buku);
+    $stmt->bindParam(':cover_belakang', $belakang);
+    $stmt->bindParam(':cover_lainnya', $lainnya);
     $buku = $stmt->execute();
-    if($buku) {
+    if($buku && $belakang && $lainnya) {
         // Redirect to homepage to display updated user in list
         echo '<script type="text/javascript">'; 
         echo 'alert("Buku Berhasil Diupdate !");'; 
@@ -155,6 +167,7 @@ if(isset($_POST['update']))
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -203,11 +216,11 @@ if(isset($_POST['update']))
                         <form action="" method="POST" name="form1" enctype="multipart/form-data">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Judul Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" value="<?php echo $result_buku[0]['judul_buku'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul_buku" autocomplete="off" value="<?php echo $result_buku[0]['judul_buku'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Sinposis</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" value="<?php echo $result_buku[0]['sinopsis'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="sinopsis" autocomplete="off" value="<?php echo $result_buku[0]['sinopsis'];?>">
                                 </div> 
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Kategori</label>
@@ -231,31 +244,31 @@ if(isset($_POST['update']))
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Pengarang</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" value="<?php echo $result_buku[0]['pengarang'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="pengarang" autocomplete="off" value="<?php echo $result_buku[0]['pengarang'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Jumlah Buku</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" value="<?php echo $result_buku[0]['jumlah_buku'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="jumlah_buku" autocomplete="off" value="<?php echo $result_buku[0]['jumlah_buku'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Nama Penerbit</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" value="<?php echo $result_buku[0]['nama_penerbit'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_penerbit" autocomplete="off" value="<?php echo $result_buku[0]['nama_penerbit'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>ISBN</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" value="<?php echo $result_buku[0]['isbn'];;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="isbn" autocomplete="off" value="<?php echo $result_buku[0]['isbn'];;?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Lokasi</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" value="<?php echo $result_buku[0]['lokasi'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="lokasi" autocomplete="off" value="<?php echo $result_buku[0]['lokasi'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Tahun</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" value="<?php echo $result_buku[0]['tahun'];;?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="tahun" autocomplete="off" value="<?php echo $result_buku[0]['tahun'];;?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Tanggal Masuk</label>
-                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" value="<?php echo $result_buku[0]['tanggal_masuk'];?>">
+                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal_masuk" autocomplete="off" value="<?php echo $result_buku[0]['tanggal_masuk'];?>">
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Sumber</label>
@@ -266,11 +279,19 @@ if(isset($_POST['update']))
                                 </div>
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Harga</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" value="<?php echo $result_buku[0]['harga'];?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="harga" autocomplete="off" value="<?php echo $result_buku[0]['harga'];?>">
                                 </div>
                                 <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Cover</label><br>
-                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="foto" value="<?php echo $result_buku[0]['foto'];?>"><br>
+                                <label for='exampleFormControlInput1'>Cover Depan</label><br>
+                                    <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="foto"><br>
+                                </div>
+                                <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Cover Belakang</label><br>
+                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="cover_belakang"><br>
+                                </div>
+                                <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Cover Lainnya</label><br>
+                                <input type='file' accept="image/*"id='exampleFormControlInput1' required="" name="cover_lainnya"><br>
                                 </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value="<?php echo $_GET['id'];?>">

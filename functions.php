@@ -141,4 +141,18 @@ function os_user()
 	$OS = _userAgent();
 	return $OS['platform'];
 }
+function cari($keyword){
+    $query = "SELECT * FROM m_buku WHERE
+                judul_buku = '%$keyword%'";
+    return query($query);
+}
+function query($query){
+    global $pdo_con;
+    $result = mysqli_query($pdo_con, $query);
+    $rows = [];
+    while($row = mysqli_fetch_assoc($result)){
+        $rows[] = $row;
+    }
+    return $rows;
+}
 ?>

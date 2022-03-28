@@ -231,17 +231,6 @@ End Fixed Navigation
 	</div> <!-- end container -->
 </section> <!-- end section -->
 
-<!--================================
-=            Google Map            =
-=================================-->
-<section class="map">
-	<!-- Google Map -->
-	<div id="map_canvas"></div>
-</section>
-<!--====  End of Google Map  ====-->
-
-
-
 <footer id="footer" class="bg-one">
   <div class="top-footer">
     <div class="container">

@@ -181,7 +181,7 @@ End Fixed Navigation
 <section class="blog" id="blog">
 	<div class="container">
         <?php
-          $stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita ORDER BY id ");
+          $stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita ORDER BY tanggal LIMIT 3 ");
           $stmt_berita->execute();
           $result_berita = $stmt_berita->fetchAll();
         ?>

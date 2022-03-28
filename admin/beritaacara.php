@@ -33,6 +33,9 @@ $result_berita = $stmt_berita->fetchAll();
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="datepicker/js/bootstrap-datepicker.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -105,6 +108,7 @@ $result_berita = $stmt_berita->fetchAll();
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -162,6 +166,7 @@ $result_berita = $stmt_berita->fetchAll();
                                           <th scope="col">Keterangan</th>
                                           <th scope="col">isi</th>
                                           <th scope="col">Gambar</th>
+                                          <th scope="col">Tanggal</th>
                                           <th class="col-2">Action</th>
                                         </tr>
                                       </thead>
@@ -176,6 +181,7 @@ $result_berita = $stmt_berita->fetchAll();
                                             echo "<td>".$user_data['keterangan']."</td>";
                                             echo "<td>".$user_data['isi']."</td>";
                                             echo "<td>".$user_data['foto']."</td>";
+                                            echo "<td>".$user_data['tanggal']."</td>";
                                             echo "<td>
 
                                             <a href='editberitaacara.php?id=$user_data[id]'><button class='btn btn-primary' title='Edit'>
@@ -195,7 +201,7 @@ $result_berita = $stmt_berita->fetchAll();
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Berita</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -205,19 +211,22 @@ $result_berita = $stmt_berita->fetchAll();
           <form action="" method="POST" name="form1">
             <div class='form-group'>
               <label for='exampleFormControlInput1'>Judul</label>
-              <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" required>
+              <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" autocomplete="off" required>
             </div>
             <div class='form-group'>
                 <label for='exampleFormControlInput1'>Keterangan</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" required>
+                <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" autocomplete="off" required>
               </div>
               <div class='form-group'>
-                <label for='exampleFormControlInput1'>isi</label>
-                <input type='text' class='form-control' id='exampleFormControlInput1' name="isi" required>
+                <label for='exampleFormControlInput1'>Isi</label>
+                <textarea class='form-control' id='exampleFormControlInput1' name="isi" rows="10" cols="10" autocomplete="off" required></textarea>
+              </div>
+              <div class='form-group'>
+                <input type='hidden' class="form-control datepicker" id='exampleFormControlInput1' name="tanggal" value="<?php echo date("Y-m-d");?>">
               </div>
               <div class='form-group'>
                 <label for='exampleFormControlInput1'>Gambar</label><br>
-                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto" required=""><br>
               </div>
               <div class='form-footer'>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -227,21 +236,21 @@ $result_berita = $stmt_berita->fetchAll();
         </div>
           <?php
           if(isset($_POST['Submit'])){
-            //$id = $_POST['id'];
             $judul = $_POST['judul'];
             $keterangan = $_POST['keterangan'];
             $isi = $_POST['isi'];
             $foto = $_POST['foto'];
+            $tanggal = $_POST['tanggal'];
 
             //include database connection file
             include('config.php');
 
             //insert user data into table
-            $sql = "INSERT INTO l_berita (judul, keterangan, isi, foto) VALUES (:judul, :keterangan, :isi, :foto)";
+            $sql = "INSERT INTO l_berita (judul, keterangan, isi, foto, tanggal) VALUES (:judul, :keterangan, :isi, :foto, :tanggal)";
             $stmt_berita = $pdo_conn->prepare($sql);
             $stmt = $pdo_conn->prepare($sql);
             $result = $stmt->execute(array
-            (':judul'=>$_POST['judul'],':keterangan'=>$_POST['keterangan'],':isi'=>$_POST['isi'],':foto'=>$_POST['foto']));
+            (':judul'=>$_POST['judul'],':keterangan'=>$_POST['keterangan'],':isi'=>$_POST['isi'],':foto'=>$_POST['foto'],':tanggal'=>$_POST['tanggal']));
 
             echo "<script>window.location.href='beritaacara.php';</script>";
           }
@@ -321,6 +330,18 @@ $result_berita = $stmt_berita->fetchAll();
     $('.confirmation').on('click', function(){
       return confirm ('Yakin Ingin Menghapus?');
     })
+    </script>
+    <!-- Menambahakan Date Range Picker -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <script type="text/javascript">
+
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd', 
+        startDate: new Date(),
+        autoclose: true,
+        todayHighlight:true,
+    });
     </script>
 
 </body>

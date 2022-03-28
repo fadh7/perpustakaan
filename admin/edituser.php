@@ -118,6 +118,7 @@ if(isset($_POST["update"]))
                     <div class="bg-white collapse-inner rounded">
                         <a class="collapse-item" href="pinjambuku.html">Pinjam Buku</a>
                         <a class="collapse-item" href="pengembalianbuku.html">Pengembalian Buku</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="riwayatpeminjaman.html">Riwayat Peminjaman</a>
                     </div>
                 </div>
@@ -186,19 +187,19 @@ if(isset($_POST["update"]))
                         <form action="" method="POST" name="form1" enctype="multipart/form-data">
                                 <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Username</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" value="<?php echo $result_user[0]['username'];?>">
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="username" autocomplete="off" value="<?php echo $result_user[0]['username'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Password</label>
-                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" value="<?php echo $result_user[0]['password'];?>">
+                                    <input type='password' class='form-control' id='exampleFormControlInput1' name="password" autocomplete="off" value="<?php echo $result_user[0]['password'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Depan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" value="<?php echo $result_user[0]['nama_depan'];?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_depan" autocomplete="off" value="<?php echo $result_user[0]['nama_depan'];?>">
                                 </div>
                                 <div class='form-group'>
                                     <label for='exampleFormControlInput1'>Nama Belakang</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" value="<?php echo $result_user[0]['nama_belakang'];?>">
+                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="nama_belakang" autocomplete="off" value="<?php echo $result_user[0]['nama_belakang'];?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">role</label>

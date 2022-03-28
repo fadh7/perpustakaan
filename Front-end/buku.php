@@ -4,7 +4,15 @@ include_once("../admin/config.php");
    $stmt_buku = $pdo_conn->prepare("SELECT * FROM m_buku ORDER BY id ");
    $stmt_buku->execute();
    $result_buku = $stmt_buku->fetchAll();
+
+   // Tombol cari ditekan
+
+   if(isset($_POST["cari"])){
+      $stmt_buku = cari($_POST["keyword"]);
+   }
+   
 ?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -144,7 +152,7 @@ End Fixed Navigation
                    <h2 class="mb-3"></h2>    
                    <div class="w-100 iq-search-filter">
                       <ul class="list-inline p-0 m-0 row justify-content-center search-menu-options">
-                         <li class="search-menu-opt">
+                         <!-- <li class="search-menu-opt">
                             <div class="iq-dropdown">
                                <div class="form-group mb-0">
                                   <select class="form-control form-search-control bg-white border-0" id="exampleFormControlSelect1">
@@ -157,7 +165,7 @@ End Fixed Navigation
                                   </select>
                                </div>
                             </div>
-                         </li>
+                         </li> -->
                          <li class="search-menu-opt">
                             <div class="iq-dropdown">
                                <div class="form-group mb-0">
@@ -204,14 +212,11 @@ End Fixed Navigation
                             </div>
                          </li>
                          <li class="search-menu-opt">
-                            <div class="iq-search-bar search-book d-flex align-items-center">
-                               <form action="#" class="searchbox">
-                                  <input type="text" class="text search-input" placeholder="search here...">
-                                  <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                               <form action="#" class="iq-search-bar search-book d-flek align-items-center searchbox">
+                                  <input type="text" class="text search-input" size="25" name="keyword" autocomplete="off" placeholder="search here...">
                                </form>
-                               <button type="submit" class="btn btn-primary search-data ml-2">Search</button>
-                            </div>
                          </li>
+                         <button type="submit" class="btn transparent" name="cari">Search</button>
                       </ul>
                    </div> 
                 </div>

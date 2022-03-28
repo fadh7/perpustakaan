@@ -3,30 +3,43 @@
 include_once("config.php");
 
 // Fetch all users data from database
-$stmt_berita = $pdo_conn->prepare("SELECT * FROM l_berita WHERE id=" ."'" . $_GET['id'] . "'");
-$stmt_berita->execute();
-$result_berita = $stmt_berita->fetchAll();
+$stmt_galeri = $pdo_conn->prepare("SELECT * FROM t_galeri WHERE id=" ."'" . $_GET['id'] . "'");
+$stmt_galeri->execute();
+$result_galeri = $stmt_galeri->fetchAll();
+
 ?>
 <?php
 // include database connection file
 include_once("config.php");
  
 // Check if form is submitted for user update, then redirect to homepage after update
-if(isset($_POST['update']))
-{    
-        
-    // update berita
-    $stmt=$pdo_conn->prepare("UPDATE l_berita SET judul=:judul,keterangan=:keterangan,isi=:isi,foto=:foto, tanggal=:tanggal WHERE id=:id");
+if(isset($_POST["update"]))
+{       
+    $galeri = $_FILES['foto']['name'];
+    $file_tmp = $_FILES['foto']['tmp_name'];
+    $folder = '../Front-end/images/galery';
+    $cek = move_uploaded_file($file_tmp, $folder.$galeri);
+
+    // update user
+    $stmt=$pdo_conn->prepare("UPDATE t_galeri SET foto=:foto,deskripsi=:deskripsi,tanggal=:tanggal WHERE id=:id");
     $stmt->bindParam(':id', $_POST['id']);
-    $stmt->bindParam(':judul', $_POST['judul']);
-    $stmt->bindParam(':keterangan', $_POST['keterangan']);
-    $stmt->bindParam(':isi', $_POST['isi']);
-    $stmt->bindParam(':foto', $_POST['foto']);
+    $stmt->bindParam(':foto', $galeri);
+    $stmt->bindParam(':deskripsi', $_POST['deskripsi']);
     $stmt->bindParam(':tanggal', $_POST['tanggal']);
-    $berita = $stmt->execute();
-    
-    // Redirect to homepage to display updated user in list
-    header("Location: beritaacara.php");
+    $galeri = $stmt->execute();
+    if($galeri) {
+        // Redirect to homepage to display updated user in list
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Galeri Berhasil Diupdate !");'; 
+        echo 'window.location.href = "sekilasgaleri.php";';
+        echo '</script>';
+    }
+    else{
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Upload File Gagal!");'; 
+        echo 'window.location.href = "editgaleri.php";';
+        echo '</script>';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -55,8 +68,6 @@ if(isset($_POST['update']))
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="datepicker/js/bootstrap-datepicker.js"></script>
 
 </head>
 
@@ -69,7 +80,7 @@ if(isset($_POST['update']))
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img class="logo-abbr" height="60px" src="./img/logobaru.png" alt="">
                 </div>
@@ -80,7 +91,7 @@ if(isset($_POST['update']))
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -130,6 +141,7 @@ if(isset($_POST['update']))
                         <a class="collapse-item" href="tentang.php">Tentang</a>
                         <a class="collapse-item" href="beritaacara.php">Berita Acara</a>
                         <a class="collapse-item" href="strukturkepengurusan.php">Struktur Kepengurusan</a>
+                        <a class="collapse-item" href="sekilasgaleri.php">Sekilas Galeri</a>
                         <a class="collapse-item" href="statistikpengunjung.php">Statistik Pengunjung</a>
                     </div>
                 </div>
@@ -154,7 +166,7 @@ if(isset($_POST['update']))
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h3 class="h3 mb-0 text-gray-800">Berita Acara</h3>
+                    <h3 class="h3 mb-0 text-gray-800">Data User</h3>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                             <!-- Dropdown - User Information -->
@@ -175,30 +187,22 @@ if(isset($_POST['update']))
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <form action="" method="POST" name="form1">
-                                <div class='form-group'>
-                                <label for='exampleFormControlInput1'>Judul</label>
-                                <input type='text' class='form-control' id='exampleFormControlInput1' name="judul" autocomplete="off" value="<?php echo $result_berita[0]['judul'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Keterangan</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="keterangan" autocomplete="off" value="<?php echo $result_berita[0]['keterangan'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Isi</label>
-                                    <input type='text' class='form-control' id='exampleFormControlInput1' name="isi" autocomplete="off" value="<?php echo $result_berita[0]['isi'];?>">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Tanggal</label>
-                                    <input type='text' class='form-control datepicker' id='exampleFormControlInput1' name="tanggal" autocomplete="off" value="<?php echo $result_berita[0]['tanggal'];?> ">
-                                </div>
-                                <div class='form-group'>
-                                    <label for='exampleFormControlInput1'>Gambar</label><br>
-                                    <input type='file' accept="image/*" id='exampleFormControlInput1' name="foto" value="" required><br>
-                                </div>
+                        <form action="" method="POST" name="form1" enctype="multipart/form-data">
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Deskripsi</label>
+                                <input type='text' class='form-control' id='exampleFormControlInput1' name="deskripsi" autocomplete="off" value="<?php echo $result_galeri[0]['deskripsi'];?>">
+                            </div>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Tanggal</label>
+                                <input type='date' class='form-control' id='exampleFormControlInput1' name="tanggal" autocomplete="off" value="<?php echo $result_galeri[0]['tanggal'];?>">
+                            </div>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Foto</label><br>
+                                <input type='file' accept="image/*"id='exampleFormControlInput1' name="foto"><br>
+                            </div>
                                 <div class='form-footer'>
                                 <input type="hidden" name="id" value=<?php echo $_GET['id'];?>>
-                                <a href="beritaacara.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
+                                <a href="user.php"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
                                 <button type="submit" name="update" value="Edit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </form>   
@@ -275,21 +279,6 @@ if(isset($_POST['update']))
     $('.confirmation').on('click', function(){
       return confirm ('Yakin Ingin Menghapus?');
     })
-    </script>
-    <!-- Menambahkan jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-    <!-- Menambahakan Date Range Picker -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-    <script type="text/javascript">
-
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd', 
-        startDate: new Date(),
-        autoclose: true,
-        todayHighlight:true,
-    });
     </script>
 
 </body>
